@@ -11,8 +11,8 @@
       "trim": "Base",
       "engine": "3.6L V6",
       "image": "https://platform.cstatic-images.com/xlarge/in/v2/stock_photos/bf293c24-d33e-4f3d-ae36-d0ce664b19b0/f8ea4326-edf1-48aa-a8b4-c161c71dd1d7.png",
-      "mileage": null,
-      "mileageDate": null,
+      "mileage": 88000,
+      "mileageDate": "2026-10-04",
       "specs": [
         {
           "id": "s1",
