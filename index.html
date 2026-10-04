@@ -75,7 +75,8 @@ section{margin-bottom:56px}
 h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-height:1.2;letter-spacing:-.01em}
 .empty{color:var(--muted);padding:16px 0;border-top:1px solid var(--line)}
 
-/* Coming due */
+/* Recommended service */
+.sec-intro{margin:-6px 0 16px;color:var(--muted);font-size:.9375rem;max-width:68ch}
 .tags{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .tag{background:var(--card);border-radius:var(--radius-lg);padding:18px 18px 16px}
 .tag .name{font-size:.9375rem;color:var(--muted);display:flex;align-items:center;gap:8px}
@@ -164,7 +165,8 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   </div>
 
   <section>
-    <div class="sec-head"><h2>Coming due</h2><button class="btn small edit-only" id="intervalsBtn">Edit schedule</button></div>
+    <div class="sec-head"><h2>Recommended service</h2><button class="btn small edit-only" id="intervalsBtn">Edit schedule</button></div>
+    <p class="sec-intro" id="schedIntro"></p>
     <div class="tags" id="dueTags"></div>
   </section>
 
@@ -373,7 +375,19 @@ function addMonths(dateStr, m){
 
 function intervalStatus(v, it){
   const last = v.log.filter(e => e.intervalId === it.id).sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0))[0];
-  if (!last) return { cls:"unknown", status:"Not logged yet", meta: scheduleText(it) };
+  if (!last) {
+    const ageMonths = v.year ? monthsBetween(`${v.year}-01-01`, today()) : null;
+    const pastMiles = it.miles && v.mileage != null && v.mileage >= it.miles;
+    const pastAge = it.months && ageMonths != null && ageMonths >= it.months;
+    const note = it.note ? ` ${it.note}` : "";
+    if (pastMiles || pastAge) {
+      const passed = pastMiles ? Math.floor(v.mileage / it.miles) * it.miles : null;
+      const why = pastMiles ? `No record since the ${fmtMiles(passed)} mark.` : `No record, and the car is past ${Math.round(it.months/12)} years.`;
+      return { cls:"due", status:"Due, no record", meta: `${scheduleText(it)}. ${why}${note}` };
+    }
+    const next = it.miles && v.mileage != null ? Math.ceil((v.mileage + 1) / it.miles) * it.miles : null;
+    return { cls:"unknown", status: next ? `Due at ${fmtMiles(next)}` : "Not logged yet", meta: `${scheduleText(it)}.${note}` };
+  }
   let milesLeft = null, monthsLeft = null, parts = [];
   if (it.miles && last.miles != null && v.mileage != null) {
     milesLeft = (last.miles + it.miles) - v.mileage;
@@ -393,8 +407,9 @@ function intervalStatus(v, it){
   return { cls, status, meta: `Last done ${fmtDate(last.date)}${last.miles != null ? " at " + fmtMiles(last.miles) : ""}. Next ${parts.join(" or ") || "—"}.` };
 }
 function scheduleText(it){
-  const p = []; if (it.miles) p.push(`${Number(it.miles).toLocaleString()} mi`); if (it.months) p.push(`${it.months} months`);
-  return p.length ? "Every " + p.join(" or ") : "No schedule set";
+  const yrs = it.months && it.months % 12 === 0 ? `${it.months/12} ${it.months === 12 ? "year" : "years"}` : it.months ? `${it.months} months` : null;
+  const q = []; if (it.miles) q.push(`${Number(it.miles).toLocaleString()} mi`); if (yrs) q.push(yrs);
+  return q.length ? "Every " + q.join(" or ") : "No schedule set";
 }
 
 /* ===== Render ===== */
@@ -430,7 +445,8 @@ function render(){
   $("#odo").innerHTML = [...digits].map((d,i) => `<span class="${v.mileage != null && i < firstReal ? "lead" : ""}">${d}</span>`).join("");
   $("#odoNote").textContent = v.mileage != null ? `miles${v.mileageDate ? ", as of " + fmtDate(v.mileageDate) : ""}` : "Mileage not set";
 
-  // Coming due, most urgent first
+  $("#schedIntro").textContent = v.scheduleNote || "Each item is due at whichever comes first, its miles or its time since you last logged it.";
+  // Recommended service, most urgent first
   const rank = { over:0, due:1, ok:2, unknown:3 };
   const tags = v.intervals.map(it => ({ it, s: intervalStatus(v, it) })).sort((a,b) => rank[a.s.cls]-rank[b.s.cls]);
   $("#dueTags").innerHTML = tags.length ? tags.map(({it,s}) => `
@@ -599,7 +615,8 @@ $("#intervalsBtn").onclick = () => {
   openDlg($("#intDlg"), async () => {
     v.intervals = [...$("#intRows").querySelectorAll("[data-int]")].map(r => ({
       id: r.dataset.int, name: r.querySelector(".iName").value.trim(),
-      miles: numOrNull(r.querySelector(".iMiles").value), months: numOrNull(r.querySelector(".iMonths").value)
+      miles: numOrNull(r.querySelector(".iMiles").value), months: numOrNull(r.querySelector(".iMonths").value),
+      note: (v.intervals.find(x => x.id === r.dataset.int) || {}).note || null
     })).filter(i => i.name);
     render(); await save("Update maintenance schedule");
   });

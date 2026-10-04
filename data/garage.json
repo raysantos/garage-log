@@ -49,38 +49,65 @@
         {
           "id": "oil",
           "name": "Oil and filter",
-          "miles": 7500,
-          "months": 12
+          "miles": 10000,
+          "months": 12,
+          "note": null
         },
         {
-          "id": "rotate",
-          "name": "Tire rotation",
-          "miles": 7500,
-          "months": null
+          "id": "maint",
+          "name": "Maintenance service",
+          "miles": 40000,
+          "months": 48,
+          "note": "Full inspection plus cabin (pollen) filter."
         },
         {
-          "id": "cabin",
-          "name": "Cabin air filter",
-          "miles": 20000,
-          "months": 24
+          "id": "plugs",
+          "name": "Spark plugs",
+          "miles": 40000,
+          "months": 48,
+          "note": null
+        },
+        {
+          "id": "airfilter",
+          "name": "Engine air filter",
+          "miles": 80000,
+          "months": 48,
+          "note": "Sooner in dusty conditions."
         },
         {
           "id": "brakefluid",
           "name": "Brake fluid",
           "miles": null,
-          "months": 24
+          "months": 24,
+          "note": null
         },
         {
-          "id": "airfilter",
-          "name": "Engine air filter",
-          "miles": 30000,
-          "months": 48
+          "id": "atf",
+          "name": "Tiptronic transmission fluid",
+          "miles": 160000,
+          "months": 192,
+          "note": "Automatic transmission only."
         },
         {
-          "id": "plugs",
-          "name": "Spark plugs",
-          "miles": 60000,
-          "months": 48
+          "id": "transfer",
+          "name": "Transfer case fluid",
+          "miles": 160000,
+          "months": 192,
+          "note": null
+        },
+        {
+          "id": "diffs",
+          "name": "Front and rear differential fluid",
+          "miles": 160000,
+          "months": 192,
+          "note": null
+        },
+        {
+          "id": "rotate",
+          "name": "Tire rotation",
+          "miles": 7500,
+          "months": null,
+          "note": "Not on the factory schedule."
         }
       ],
       "log": [],
@@ -121,7 +148,8 @@
           "estCost": 15,
           "notes": "Rear panel on the passenger seat back is separating. It's held on with double-sided adhesive strips. Fix: remove old adhesive, clean both surfaces with isopropyl alcohol, re-stick with automotive double-sided tape (e.g. 3M VHB or 3M auto attachment tape), press firmly and let it cure."
         }
-      ]
+      ],
+      "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown."
     }
   ]
 }
