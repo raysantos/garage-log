@@ -118,8 +118,8 @@
           "priority": "Low",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Rear plastic panel on the passenger seat back is separating. Likely broken or missing clips."
+          "estCost": 15,
+          "notes": "Rear panel on the passenger seat back is separating. It's held on with double-sided adhesive strips. Fix: remove old adhesive, clean both surfaces with isopropyl alcohol, re-stick with automotive double-sided tape (e.g. 3M VHB or 3M auto attachment tape), press firmly and let it cure."
         }
       ]
     }
