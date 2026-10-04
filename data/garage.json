@@ -93,6 +93,33 @@
           "dueDate": null,
           "estCost": 100,
           "notes": "Ramps, 36 mm filter socket, 19 mm socket, 8 qt oil, Mahle OX160D, new drain plug."
+        },
+        {
+          "id": "t2",
+          "title": "Passenger headlight: water inside the lens",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Moisture inside the passenger headlight housing. Check the housing seal and rear cap, dry it out and reseal. If it keeps coming back, the housing may need replacing."
+        },
+        {
+          "id": "t3",
+          "title": "Interior dome and rear passenger overhead lights not working",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Front dome lights and rear passenger overhead lights are both out. Check the interior lighting fuse first, then bulbs and door switches."
+        },
+        {
+          "id": "t4",
+          "title": "Passenger front seat back panel coming off",
+          "priority": "Low",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Rear plastic panel on the passenger seat back is separating. Likely broken or missing clips."
         }
       ]
     }
