@@ -149,7 +149,13 @@
           "notes": "Rear panel on the passenger seat back is separating. It's held on with double-sided adhesive strips. Fix: remove old adhesive, clean both surfaces with isopropyl alcohol, re-stick with automotive double-sided tape (e.g. 3M VHB or 3M auto attachment tape), press firmly and let it cure."
         }
       ],
-      "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown."
+      "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
+      "tires": {
+        "FL": {},
+        "FR": {},
+        "RL": {},
+        "RR": {}
+      }
     }
   ]
 }

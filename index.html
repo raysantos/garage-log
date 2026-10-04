@@ -100,6 +100,39 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 .tag.over .status{color:var(--over)} .tag.due .status{color:var(--due)}
 .tag .meta{font-size:.8125rem;color:var(--muted)}
 
+
+/* Tires */
+.tires{display:grid;grid-template-columns:1fr minmax(160px,220px) 1fr;gap:20px 28px;align-items:center}
+.tire-col{display:grid;grid-template-rows:1fr 1fr;gap:20px;align-self:stretch}
+.tire-col .tire-card{align-self:center}
+.tire-col.left .tire-card{text-align:right}
+.tire-card{background:var(--card);border-radius:var(--radius-lg);padding:16px 18px;border:1px solid transparent;font:inherit;color:inherit;width:100%;text-align:left}
+body.editing .tire-card{cursor:pointer}
+body.editing .tire-card:hover{border-color:var(--ink)}
+.tire-card .pos{font-size:.8125rem;color:var(--muted)}
+.tire-card .brand{font-family:var(--font-head);font-weight:600;font-size:1.125rem;line-height:1.25;margin-top:2px}
+.tire-card .model{font-size:.9375rem;color:var(--muted)}
+.tire-card .psi{font-family:var(--font-head);font-weight:600;font-size:2rem;line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
+.tire-card .psi small{font-size:.875rem;font-weight:400;color:var(--muted);margin-left:4px}
+.tire-card .facts{font-size:.8125rem;color:var(--muted);margin-top:6px}
+.tire-card.empty-tire .brand{color:var(--muted);font-weight:400}
+.car-top{width:100%;height:auto;display:block}
+.car-top .body{fill:var(--card);stroke:var(--line);stroke-width:2}
+.car-top .glass{fill:none;stroke:var(--line);stroke-width:2}
+.car-top .tire{fill:var(--ink)}
+.car-top .tire.mismatch{fill:var(--due)}
+.car-top .tire.unset{fill:var(--line)}
+.car-top .axle{stroke:var(--line);stroke-width:2}
+.tire-warn{margin:16px 0 0;font-size:.9375rem;color:var(--due);display:flex;gap:8px;align-items:flex-start}
+.tire-warn::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--due);flex:none;margin-top:8px}
+@media (max-width:760px){
+  .tires{grid-template-columns:1fr 1fr;gap:12px}
+  .tires .car-wrap{grid-column:1/-1;grid-row:1;max-width:150px;margin:0 auto}
+  .tire-col{gap:12px;grid-template-rows:1fr 1fr}
+  .tire-col .tire-card{align-self:stretch}
+  .tire-col.left .tire-card{text-align:left}
+}
+
 /* Lists */
 .list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .list li{padding:18px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:4px 16px}
@@ -186,6 +219,36 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="tags" id="dueTags"></div>
   </section>
 
+  <section>
+    <div class="sec-head"><h2>Tires</h2></div>
+    <div class="tires">
+      <div class="tire-col left">
+        <button type="button" class="tire-card" data-tire="FL"></button>
+        <button type="button" class="tire-card" data-tire="RL"></button>
+      </div>
+      <div class="car-wrap">
+        <svg class="car-top" viewBox="0 0 200 400" role="img" aria-label="Top view of the car showing tire positions">
+          <line class="axle" x1="36" y1="108" x2="164" y2="108"/>
+          <line class="axle" x1="36" y1="300" x2="164" y2="300"/>
+          <rect class="tire" data-tire-shape="FL" x="22" y="78" width="28" height="60" rx="7"/>
+          <rect class="tire" data-tire-shape="FR" x="150" y="78" width="28" height="60" rx="7"/>
+          <rect class="tire" data-tire-shape="RL" x="22" y="270" width="28" height="60" rx="7"/>
+          <rect class="tire" data-tire-shape="RR" x="150" y="270" width="28" height="60" rx="7"/>
+          <path class="body" d="M100 18 C138 18 156 30 160 60 L164 120 L164 330 C164 362 150 382 100 382 C50 382 36 362 36 330 L36 120 L40 60 C44 30 62 18 100 18 Z"/>
+          <path class="glass" d="M56 122 C70 112 130 112 144 122 L138 160 C122 154 78 154 62 160 Z"/>
+          <path class="glass" d="M62 300 C78 306 122 306 138 300 L142 330 C126 340 74 340 58 330 Z"/>
+          <line class="glass" x1="60" y1="170" x2="60" y2="290"/>
+          <line class="glass" x1="140" y1="170" x2="140" y2="290"/>
+        </svg>
+      </div>
+      <div class="tire-col right">
+        <button type="button" class="tire-card" data-tire="FR"></button>
+        <button type="button" class="tire-card" data-tire="RR"></button>
+      </div>
+    </div>
+    <p class="tire-warn" id="tireWarn" hidden></p>
+  </section>
+
   <div class="grid">
     <div>
       <section>
@@ -270,6 +333,28 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   </div>
   <div class="field"><label for="vImage">Image URL</label><input id="vImage" type="url" placeholder="https://… (side view, transparent PNG works best)"></div>
   <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save vehicle</button></div>
+</form></dialog>
+
+<dialog id="tireDlg"><form method="dialog" id="tireForm">
+  <h3 id="tireDlgTitle">Tire</h3>
+  <div class="row">
+    <div class="field"><label for="tyBrand">Brand</label><input id="tyBrand" placeholder="Michelin"></div>
+    <div class="field"><label for="tyModel">Model</label><input id="tyModel" placeholder="Pilot Sport 4 SUV"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="tySize">Size</label><input id="tySize" placeholder="255/55R18"></div>
+    <div class="field"><label for="tyPsi">Pressure (psi)</label><input id="tyPsi" type="number" min="0" step="0.5"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="tyTread">Tread depth (/32")</label><input id="tyTread" type="number" min="0" max="20" step="0.5"></div>
+    <div class="field"><label for="tyDot">DOT date code</label><input id="tyDot" placeholder="e.g. 2423" maxlength="4" inputmode="numeric"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="tyDate">Installed on</label><input id="tyDate" type="date"></div>
+    <div class="field"><label for="tyMiles">Installed at mileage</label><input id="tyMiles" type="number" min="0"></div>
+  </div>
+  <div class="field"><label for="tyNotes">Notes</label><textarea id="tyNotes" rows="2"></textarea></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save tire</button></div>
 </form></dialog>
 
 <dialog id="specDlg"><form method="dialog" id="specForm">
@@ -489,6 +574,7 @@ function render(){
     </li>`).join("") : `<li class="empty">Nothing on the list.</li>`;
 
   renderLog();
+  renderTires();
 
   // Specs
   $("#specList").innerHTML = v.specs.length ? v.specs.map(s => `
@@ -650,6 +736,65 @@ document.addEventListener("click", async e => {
   if (act === "del-todo" && confirm("Remove this work item?")) { v.todo = v.todo.filter(x => x.id !== id); render(); await save("Remove work item"); }
   if (act === "edit-spec") specDialog(v.specs.find(x => x.id === id));
   if (act === "del-spec" && confirm("Remove this spec?")) { v.specs = v.specs.filter(x => x.id !== id); render(); await save("Remove spec"); }
+});
+
+
+/* ===== Tires ===== */
+const TIRE_POS = { FL:"Front left", FR:"Front right", RL:"Rear left", RR:"Rear right" };
+function dotAge(dot){
+  if (!/^\d{4}$/.test(dot || "")) return null;
+  const wk = +dot.slice(0,2), yr = 2000 + +dot.slice(2);
+  const made = new Date(yr, 0, 1 + (wk - 1) * 7);
+  return (Date.now() - made) / (365.25 * 864e5);
+}
+function renderTires(){
+  const v = V(); if (!v) return;
+  v.tires ||= {};
+  const norm = t => (t?.brand || "").trim().toLowerCase();
+  const sizes = Object.values(v.tires).map(t => (t.size || "").replace(/\s/g,"").toUpperCase()).filter(Boolean);
+  const brands = Object.keys(TIRE_POS).map(k => norm(v.tires[k])).filter(Boolean);
+  const counts = brands.reduce((m,b) => (m[b] = (m[b]||0) + 1, m), {});
+  const common = Object.entries(counts).sort((a,b) => b[1]-a[1])[0]?.[0];
+  document.querySelectorAll("[data-tire]").forEach(el => {
+    const k = el.dataset.tire, t = v.tires[k] || {};
+    const facts = [t.size, t.tread != null && t.tread !== "" ? `${t.tread}/32" tread` : "", t.installedMiles != null ? `on at ${fmtMiles(t.installedMiles)}` : (t.installedDate ? `on ${fmtDate(t.installedDate)}` : "")].filter(Boolean);
+    const age = dotAge(t.dot);
+    if (age != null) facts.push(`${age.toFixed(1)} yrs old`);
+    el.classList.toggle("empty-tire", !t.brand);
+    el.innerHTML = `
+      <div class="pos">${TIRE_POS[k]}</div>
+      <div class="brand">${esc(t.brand || "Not set")}</div>
+      ${t.model ? `<div class="model">${esc(t.model)}</div>` : ""}
+      <div class="psi">${t.psi != null && t.psi !== "" ? esc(t.psi) : "—"}<small>psi</small></div>
+      ${facts.length ? `<div class="facts">${esc(facts.join(", "))}</div>` : ""}
+      ${t.notes ? `<div class="facts">${esc(t.notes)}</div>` : ""}`;
+    el.setAttribute("aria-label", `${TIRE_POS[k]}: ${t.brand || "not set"}${editing ? ", edit" : ""}`);
+    el.tabIndex = editing ? 0 : -1;
+    const shape = document.querySelector(`[data-tire-shape="${k}"]`);
+    shape.classList.toggle("mismatch", !!(norm(t) && common && norm(t) !== common));
+    shape.classList.toggle("unset", !norm(t));
+  });
+  const warn = [];
+  if (Object.keys(counts).length > 1) warn.push("The tires aren't all the same brand. On an all-wheel-drive car, keep all four the same size and close in tread depth (within about 2/32\") to avoid straining the transfer case.");
+  if (new Set(sizes).size > 1) warn.push("The tire sizes don't all match.");
+  const old = Object.keys(TIRE_POS).filter(k => (dotAge(v.tires[k]?.dot) || 0) >= 6);
+  if (old.length) warn.push(`${old.map(k => TIRE_POS[k]).join(", ")} ${old.length > 1 ? "are" : "is"} 6 or more years old; check for cracking.`);
+  const w = $("#tireWarn"); w.hidden = !warn.length; w.textContent = warn.join(" ");
+}
+document.addEventListener("click", e => {
+  const card = e.target.closest("[data-tire]"); if (!card || !editing) return;
+  const v = V(), k = card.dataset.tire; v.tires ||= {};
+  const t = v.tires[k] || {};
+  $("#tireDlgTitle").textContent = TIRE_POS[k] + " tire";
+  $("#tyBrand").value = t.brand || ""; $("#tyModel").value = t.model || ""; $("#tySize").value = t.size || "";
+  $("#tyPsi").value = t.psi ?? ""; $("#tyTread").value = t.tread ?? ""; $("#tyDot").value = t.dot || "";
+  $("#tyDate").value = t.installedDate || ""; $("#tyMiles").value = t.installedMiles ?? ""; $("#tyNotes").value = t.notes || "";
+  openDlg($("#tireDlg"), async () => {
+    v.tires[k] = { brand:$("#tyBrand").value.trim(), model:$("#tyModel").value.trim(), size:$("#tySize").value.trim(),
+      psi:numOrNull($("#tyPsi").value), tread:numOrNull($("#tyTread").value), dot:$("#tyDot").value.trim() || null,
+      installedDate:$("#tyDate").value || null, installedMiles:numOrNull($("#tyMiles").value), notes:$("#tyNotes").value.trim() };
+    render(); await save(`Update ${TIRE_POS[k].toLowerCase()} tire`);
+  });
 });
 
 /* Theme: follows the device until you pick Light or Dark; the choice is remembered in this browser */
