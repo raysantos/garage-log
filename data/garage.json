@@ -1,0 +1,45 @@
+{
+  "garage": {
+    "name": "Ray's Garage"
+  },
+  "vehicles": [
+    {
+      "id": "cayenne-2009",
+      "year": 2009,
+      "make": "Porsche",
+      "model": "Cayenne",
+      "trim": "Base",
+      "engine": "3.6L V6",
+      "mileage": null,
+      "mileageDate": null,
+      "specs": [
+        { "id": "s1", "label": "Engine oil", "value": "5W-30, or 0W-40 / 5W-40 with Porsche A40 approval. Confirm in manual." },
+        { "id": "s2", "label": "Oil capacity", "value": "6.9 L (7.3 qt) with filter. Start with 6 qt, then use the dipstick." },
+        { "id": "s3", "label": "Oil filter", "value": "Cartridge, Mahle OX160D or equivalent, new O-ring" },
+        { "id": "s4", "label": "Filter cap", "value": "36 mm socket, 19 ft-lb" },
+        { "id": "s5", "label": "Drain plug", "value": "19 mm, 22 ft-lb, new plug and crush washer" },
+        { "id": "s6", "label": "Belly pan", "value": "T25/T27 Torx and 10 mm" }
+      ],
+      "intervals": [
+        { "id": "oil", "name": "Oil and filter", "miles": 7500, "months": 12 },
+        { "id": "rotate", "name": "Tire rotation", "miles": 7500, "months": null },
+        { "id": "cabin", "name": "Cabin air filter", "miles": 20000, "months": 24 },
+        { "id": "brakefluid", "name": "Brake fluid", "miles": null, "months": 24 },
+        { "id": "airfilter", "name": "Engine air filter", "miles": 30000, "months": 48 },
+        { "id": "plugs", "name": "Spark plugs", "miles": 60000, "months": 48 }
+      ],
+      "log": [],
+      "todo": [
+        {
+          "id": "t1",
+          "title": "First DIY oil change",
+          "priority": "High",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": 100,
+          "notes": "Ramps, 36 mm filter socket, 19 mm socket, 8 qt oil, Mahle OX160D, new drain plug."
+        }
+      ]
+    }
+  ]
+}

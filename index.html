@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garage Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Styling follows the Porsche Design System's public tokens: monochrome canvas,
+   near-black primary, grey surface, sparing status colors. Inter stands in for
+   Porsche Next, which is licensed and can't be self-hosted. No Porsche marks used. */
+:root{
+  --paper:#FFFFFF; --card:#F1F1F4; --ink:#010205; --muted:rgba(13,13,18,.6); --line:rgba(36,36,40,.16);
+  --ok:#197E10; --due:#AE5302; --over:#B6151D;
+  --radius-lg:12px; --radius-sm:4px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#010205; --card:#19191A; --ink:#FBFCFF; --muted:rgba(246,246,249,.6); --line:rgba(246,246,249,.16);
+    --ok:#10C27C; --due:#F48F2F; --over:#FD3C3C;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter",system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 80px}
+
+/* Header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.brand{font-weight:600;font-size:1rem;letter-spacing:.01em}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select.vehicle-pick{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
+
+.btn{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:10px 20px;cursor:pointer;font-weight:400;font-size:.9375rem;transition:background .15s,color .15s}
+.btn:hover{background:var(--card)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{opacity:.85;background:var(--ink)}
+.btn.small{padding:6px 14px;font-size:.875rem}
+.btn.link{border:none;background:none;padding:4px 6px;color:var(--muted);text-decoration:underline;border-radius:var(--radius-sm)}
+.btn.link:hover{color:var(--ink);background:none}
+.edit-only{display:none}
+body.editing .edit-only{display:inline-flex}
+body.editing .edit-only.block{display:block}
+
+/* Hero: model name + odometer */
+.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:48px}
+.hero h1{margin:0;font-weight:600;font-size:clamp(2.4rem,7vw,4.5rem);line-height:1;letter-spacing:-.02em}
+.hero .sub{color:var(--muted);margin-top:10px;font-size:1.125rem}
+.odo{text-align:right}
+.odo-digits{display:inline-flex;gap:2px;font-variant-numeric:tabular-nums}
+.odo-digits span{display:inline-block;min-width:1.1ch;padding:6px 4px;border:1px solid var(--line);background:var(--card);font-weight:300;font-size:clamp(1.6rem,4.4vw,2.6rem);line-height:1;text-align:center;border-radius:var(--radius-sm)}
+.odo-digits span.lead{color:var(--muted)}
+.odo-note{font-size:.875rem;color:var(--muted);margin-top:8px}
+@media (max-width:640px){.hero{grid-template-columns:1fr}.odo{text-align:left}}
+
+/* Sections */
+.grid{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
+@media (max-width:860px){.grid{grid-template-columns:1fr;gap:16px}}
+section{margin-bottom:56px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+h2{margin:0;font-weight:600;font-size:1.5rem;line-height:1.2;letter-spacing:-.01em}
+.empty{color:var(--muted);padding:16px 0;border-top:1px solid var(--line)}
+
+/* Coming due */
+.tags{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.tag{background:var(--card);border-radius:var(--radius-lg);padding:18px 18px 16px}
+.tag .name{font-size:.9375rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+.tag .name::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.tag.due .name::before{background:var(--due)}
+.tag.over .name::before{background:var(--over)}
+.tag.unknown .name::before{background:var(--line)}
+.tag .status{font-weight:600;font-size:1.25rem;line-height:1.25;margin:8px 0 6px}
+.tag.over .status{color:var(--over)} .tag.due .status{color:var(--due)}
+.tag .meta{font-size:.8125rem;color:var(--muted)}
+
+/* Lists */
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.list li{padding:18px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.list .title{font-weight:600}
+.list .meta{font-size:.875rem;color:var(--muted);grid-column:1}
+.list .notes{font-size:.9375rem;grid-column:1/-1;color:var(--muted);white-space:pre-wrap}
+.list .right{text-align:right;font-variant-numeric:tabular-nums;grid-row:1;grid-column:2}
+.list .title{grid-column:1;grid-row:1}
+.list .actions{grid-column:1/-1;gap:6px;margin-top:6px}
+.pill{display:inline-block;font-size:.75rem;font-weight:400;padding:2px 10px;border-radius:999px;background:var(--card);margin-left:8px;vertical-align:2px}
+.pill.High{color:var(--over)} .pill.Medium{color:var(--due)} .pill.Low{color:var(--muted)}
+
+/* History */
+.history-filter{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.history-filter input{flex:1;min-width:160px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
+.totals{font-size:.875rem;color:var(--muted);margin-top:12px}
+
+/* Specs */
+dl.specs{margin:0;border-top:1px solid var(--line)}
+dl.specs div{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+dl.specs dt{color:var(--muted);font-size:.9375rem}
+dl.specs dd{margin:0}
+
+/* Dialog */
+dialog{border:none;border-radius:var(--radius-lg);background:var(--paper);color:var(--ink);padding:0;width:min(540px,calc(100vw - 32px));box-shadow:0 8px 40px rgba(1,2,5,.25)}
+dialog::backdrop{background:rgba(1,2,5,.55)}
+dialog form{padding:28px}
+dialog h3{margin:0 0 18px;font-weight:600;font-size:1.5rem;letter-spacing:-.01em}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:.875rem;color:var(--muted)}
+.field input,.field select,.field textarea{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;width:100%}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--ink)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dlg-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.help{font-size:.875rem;color:var(--muted);margin:0 0 14px}
+
+/* Toast */
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:var(--radius-sm);transition:.2s;pointer-events:none;max-width:calc(100vw - 32px)}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#toast.error{background:var(--over);color:#fff}
+@media (prefers-reduced-motion:reduce){#toast,.btn{transition:none}}
+
+.banner{display:none;background:var(--card);padding:12px 16px;border-radius:var(--radius-lg);margin-bottom:32px}
+body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand" id="garageName">Garage Log</div>
+    <div class="top-actions">
+      <select class="vehicle-pick" id="vehiclePick" aria-label="Vehicle"></select>
+      <button class="btn edit-only" id="addVehicleBtn">Add vehicle</button>
+      <button class="btn" id="editToggle">Edit</button>
+    </div>
+  </header>
+
+  <div class="banner" role="status">
+    <span id="bannerText">Editing. Changes save to GitHub.</span>
+    <button class="btn small" id="lockBtn">Done editing</button>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h1 id="vTitle">—</h1>
+      <div class="sub" id="vSub"></div>
+    </div>
+    <div class="odo">
+      <div class="odo-digits" id="odo" aria-label="Current mileage"></div>
+      <div class="odo-note"><span id="odoNote"></span> <button class="btn link edit-only" id="mileageBtn">Update mileage</button></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Coming due</h2><button class="btn small edit-only" id="intervalsBtn">Edit schedule</button></div>
+    <div class="tags" id="dueTags"></div>
+  </section>
+
+  <div class="grid">
+    <div>
+      <section>
+        <div class="sec-head"><h2>Service history</h2><button class="btn small primary edit-only" id="addLogBtn">Log service</button></div>
+        <div class="history-filter"><input type="search" id="logSearch" placeholder="Search history" aria-label="Search history"></div>
+        <ul class="list" id="logList"></ul>
+        <div class="totals" id="logTotals"></div>
+      </section>
+    </div>
+    <div>
+      <section>
+        <div class="sec-head"><h2>Work needed</h2><button class="btn small primary edit-only" id="addTodoBtn">Add item</button></div>
+        <ul class="list" id="todoList"></ul>
+      </section>
+      <section>
+        <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
+        <dl class="specs" id="specList"></dl>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Dialogs -->
+<dialog id="unlockDlg"><form method="dialog" id="unlockForm">
+  <h3>Unlock editing</h3>
+  <p class="help">Paste a GitHub fine-grained token with <b>Contents: read and write</b> access to this repo only. It stays in this browser and is never saved to the repo.</p>
+  <div class="field"><label for="tokenIn">GitHub token</label><input id="tokenIn" type="password" autocomplete="off" required></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Unlock</button></div>
+</form></dialog>
+
+<dialog id="logDlg"><form method="dialog" id="logForm">
+  <h3 id="logDlgTitle">Log service</h3>
+  <div class="row">
+    <div class="field"><label for="lDate">Date</label><input id="lDate" type="date" required></div>
+    <div class="field"><label for="lMiles">Mileage</label><input id="lMiles" type="number" min="0" inputmode="numeric"></div>
+  </div>
+  <div class="field"><label for="lTitle">What was done</label><input id="lTitle" required placeholder="Oil and filter change"></div>
+  <div class="field"><label for="lInterval">Counts toward schedule item</label><select id="lInterval"></select></div>
+  <div class="row">
+    <div class="field"><label for="lCost">Cost ($)</label><input id="lCost" type="number" min="0" step="0.01"></div>
+    <div class="field"><label for="lBy">Done by</label><input id="lBy" placeholder="DIY or shop name"></div>
+  </div>
+  <div class="field"><label for="lParts">Parts used</label><input id="lParts" placeholder="Mahle OX160D, 8 qt 5W-30"></div>
+  <div class="field"><label for="lNotes">Notes</label><textarea id="lNotes" rows="3"></textarea></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save entry</button></div>
+</form></dialog>
+
+<dialog id="todoDlg"><form method="dialog" id="todoForm">
+  <h3 id="todoDlgTitle">Add work item</h3>
+  <div class="field"><label for="tTitle">What needs doing</label><input id="tTitle" required></div>
+  <div class="row">
+    <div class="field"><label for="tPriority">Priority</label><select id="tPriority"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+    <div class="field"><label for="tCost">Estimated cost ($)</label><input id="tCost" type="number" min="0" step="0.01"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="tDueMiles">Due by mileage</label><input id="tDueMiles" type="number" min="0"></div>
+    <div class="field"><label for="tDueDate">Due by date</label><input id="tDueDate" type="date"></div>
+  </div>
+  <div class="field"><label for="tNotes">Notes</label><textarea id="tNotes" rows="3"></textarea></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save item</button></div>
+</form></dialog>
+
+<dialog id="mileDlg"><form method="dialog" id="mileForm">
+  <h3>Update mileage</h3>
+  <div class="field"><label for="mMiles">Current odometer</label><input id="mMiles" type="number" min="0" required></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save mileage</button></div>
+</form></dialog>
+
+<dialog id="vehDlg"><form method="dialog" id="vehForm">
+  <h3 id="vehDlgTitle">Add vehicle</h3>
+  <div class="row">
+    <div class="field"><label for="vYear">Year</label><input id="vYear" type="number" required></div>
+    <div class="field"><label for="vMake">Make</label><input id="vMake" required></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="vModel">Model</label><input id="vModel" required></div>
+    <div class="field"><label for="vTrim">Trim</label><input id="vTrim"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="vEngine">Engine</label><input id="vEngine"></div>
+    <div class="field"><label for="vMiles">Current mileage</label><input id="vMiles" type="number" min="0"></div>
+  </div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save vehicle</button></div>
+</form></dialog>
+
+<dialog id="specDlg"><form method="dialog" id="specForm">
+  <h3 id="specDlgTitle">Add spec</h3>
+  <div class="field"><label for="sLabel">Label</label><input id="sLabel" required placeholder="Tire size"></div>
+  <div class="field"><label for="sValue">Value</label><input id="sValue" required></div>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save spec</button></div>
+</form></dialog>
+
+<dialog id="intDlg"><form method="dialog" id="intForm">
+  <h3>Edit schedule</h3>
+  <p class="help">Each item is due at whichever comes first: miles or months since it was last logged. Leave a box blank to ignore it.</p>
+  <div id="intRows"></div>
+  <button type="button" class="btn small" id="addIntRow">Add schedule item</button>
+  <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save schedule</button></div>
+</form></dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== Settings: point these at your repo ===== */
+const CONFIG = {
+  owner: "",            // your GitHub username, e.g. "raysantos"
+  repo: "garage-log",   // repo name
+  branch: "main",
+  path: "data/garage.json"
+};
+// Auto-fill owner/repo when served from <owner>.github.io/<repo>/
+(function(){
+  const h = location.hostname;
+  if (!CONFIG.owner && h.endsWith(".github.io")) {
+    CONFIG.owner = h.replace(".github.io","");
+    const seg = location.pathname.split("/").filter(Boolean)[0];
+    if (seg) CONFIG.repo = seg;
+  }
+})();
+
+const TOKEN_KEY = "garageLogToken";
+let data = null, sha = null, current = null, editing = false;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2,9);
+const fmtMiles = n => (n == null || n === "") ? "—" : Number(n).toLocaleString() + " mi";
+const fmtMoney = n => (n == null || n === "") ? "" : "$" + Number(n).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});
+const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}) : "";
+const today = () => new Date().toISOString().slice(0,10);
+const numOrNull = v => v === "" || v == null ? null : Number(v);
+
+function getToken(){ try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } }
+function setToken(t){ try { t ? localStorage.setItem(TOKEN_KEY,t) : localStorage.removeItem(TOKEN_KEY); } catch {} }
+
+function toast(msg, isError){
+  const t = $("#toast"); t.textContent = msg; t.className = "show" + (isError ? " error" : "");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.className = "", isError ? 5000 : 2500);
+}
+
+/* ===== Load ===== */
+const b64decode = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")), c => c.charCodeAt(0)));
+const b64encode = s => { const b = new TextEncoder().encode(s); let bin = ""; b.forEach(x => bin += String.fromCharCode(x)); return btoa(bin); };
+
+async function loadFromApi(token){
+  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}?ref=${CONFIG.branch}`;
+  const r = await fetch(url, { headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }, cache: "no-store" });
+  if (!r.ok) throw new Error(r.status === 401 ? "That token was rejected." : r.status === 404 ? "Repo or data file not found. Check CONFIG at the bottom of index.html." : `GitHub returned ${r.status}.`);
+  const j = await r.json();
+  sha = j.sha;
+  return JSON.parse(b64decode(j.content));
+}
+
+async function load(){
+  const token = getToken();
+  if (token && CONFIG.owner) {
+    try { data = await loadFromApi(token); editing = true; }
+    catch(e){ toast(e.message, true); }
+  }
+  if (!data) {
+    try {
+      const r = await fetch(CONFIG.path + "?v=" + Date.now(), { cache: "no-store" });
+      if (!r.ok) throw 0;
+      data = await r.json();
+    } catch { data = { garage:{ name:"Garage Log" }, vehicles:[] }; toast("Couldn't load data/garage.json.", true); }
+  }
+  current = data.vehicles[0]?.id || null;
+  render();
+}
+
+/* ===== Save ===== */
+async function save(message){
+  const token = getToken();
+  if (!token) { toast("Unlock editing first.", true); return false; }
+  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
+  const body = { message: message || "Update garage log", content: b64encode(JSON.stringify(data, null, 2) + "\n"), branch: CONFIG.branch };
+  if (sha) body.sha = sha;
+  try {
+    let r = await fetch(url, { method:"PUT", headers:{ Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json" }, body: JSON.stringify(body) });
+    if (r.status === 409 || r.status === 422) {
+      // File changed elsewhere: refresh sha and retry once
+      const g = await fetch(url + `?ref=${CONFIG.branch}`, { headers:{ Authorization:`Bearer ${token}` }, cache:"no-store" });
+      if (g.ok) { body.sha = (await g.json()).sha; r = await fetch(url, { method:"PUT", headers:{ Authorization:`Bearer ${token}`, Accept:"application/vnd.github+json" }, body: JSON.stringify(body) }); }
+    }
+    if (!r.ok) throw new Error(`Save failed (GitHub ${r.status}). Your change is still on screen; try again.`);
+    sha = (await r.json()).content.sha;
+    toast("Saved");
+    return true;
+  } catch(e){ toast(e.message, true); return false; }
+}
+
+/* ===== Helpers ===== */
+const V = () => data.vehicles.find(v => v.id === current);
+
+function monthsBetween(a, b){
+  const d1 = new Date(a + "T12:00:00"), d2 = new Date(b + "T12:00:00");
+  return (d2.getFullYear()-d1.getFullYear())*12 + (d2.getMonth()-d1.getMonth()) + (d2.getDate()-d1.getDate())/30;
+}
+function addMonths(dateStr, m){
+  const d = new Date(dateStr + "T12:00:00"); d.setMonth(d.getMonth() + m); return d.toISOString().slice(0,10);
+}
+
+function intervalStatus(v, it){
+  const last = v.log.filter(e => e.intervalId === it.id).sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0))[0];
+  if (!last) return { cls:"unknown", status:"Not logged yet", meta: scheduleText(it) };
+  let milesLeft = null, monthsLeft = null, parts = [];
+  if (it.miles && last.miles != null && v.mileage != null) {
+    milesLeft = (last.miles + it.miles) - v.mileage;
+    parts.push(`at ${fmtMiles(last.miles + it.miles)}`);
+  }
+  if (it.months && last.date) {
+    monthsLeft = it.months - monthsBetween(last.date, today());
+    parts.push(`by ${fmtDate(addMonths(last.date, it.months))}`);
+  }
+  let cls = "ok", status = "Up to date";
+  const over = (milesLeft != null && milesLeft <= 0) || (monthsLeft != null && monthsLeft <= 0);
+  const soon = (milesLeft != null && milesLeft <= Math.max(500, it.miles*0.1)) || (monthsLeft != null && monthsLeft <= 1);
+  if (over) { cls = "over"; status = "Overdue"; }
+  else if (soon) { cls = "due"; status = "Due soon"; }
+  else if (milesLeft != null) status = `${Number(Math.round(milesLeft)).toLocaleString()} mi left`;
+  else if (monthsLeft != null) status = `${Math.round(monthsLeft)} mo left`;
+  return { cls, status, meta: `Last done ${fmtDate(last.date)}${last.miles != null ? " at " + fmtMiles(last.miles) : ""}. Next ${parts.join(" or ") || "—"}.` };
+}
+function scheduleText(it){
+  const p = []; if (it.miles) p.push(`${Number(it.miles).toLocaleString()} mi`); if (it.months) p.push(`${it.months} months`);
+  return p.length ? "Every " + p.join(" or ") : "No schedule set";
+}
+
+/* ===== Render ===== */
+function render(){
+  document.body.classList.toggle("editing", editing);
+  $("#editToggle").style.display = editing ? "none" : "";
+  $("#garageName").textContent = data.garage?.name || "Garage Log";
+  document.title = data.garage?.name || "Garage Log";
+
+  const pick = $("#vehiclePick");
+  pick.innerHTML = data.vehicles.map(v => `<option value="${esc(v.id)}">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</option>`).join("");
+  pick.value = current || "";
+  pick.style.display = data.vehicles.length > 1 ? "" : "none";
+
+  const v = V();
+  if (!v) {
+    $("#vTitle").textContent = "No vehicles yet";
+    $("#vSub").textContent = editing ? "Add one to get started." : "";
+    ["#dueTags","#logList","#todoList","#specList","#odo"].forEach(s => $(s).innerHTML = "");
+    return;
+  }
+  v.log ||= []; v.todo ||= []; v.specs ||= []; v.intervals ||= [];
+
+  $("#vTitle").textContent = `${v.year} ${v.make} ${v.model}`;
+  $("#vSub").textContent = [v.trim, v.engine].filter(Boolean).join(", ");
+
+  // Odometer
+  const digits = v.mileage != null ? String(Math.round(v.mileage)).padStart(6,"0") : "------";
+  const firstReal = digits.search(/[1-9]/);
+  $("#odo").innerHTML = [...digits].map((d,i) => `<span class="${v.mileage != null && i < firstReal ? "lead" : ""}">${d}</span>`).join("");
+  $("#odoNote").textContent = v.mileage != null ? `miles${v.mileageDate ? ", as of " + fmtDate(v.mileageDate) : ""}` : "Mileage not set";
+
+  // Coming due, most urgent first
+  const rank = { over:0, due:1, ok:2, unknown:3 };
+  const tags = v.intervals.map(it => ({ it, s: intervalStatus(v, it) })).sort((a,b) => rank[a.s.cls]-rank[b.s.cls]);
+  $("#dueTags").innerHTML = tags.length ? tags.map(({it,s}) => `
+    <div class="tag ${s.cls}">
+      <div class="name">${esc(it.name)}</div>
+      <div class="status">${esc(s.status)}</div>
+      <div class="meta">${esc(s.meta)}</div>
+    </div>`).join("") : `<div class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</div>`;
+
+  // Work needed
+  const prio = { High:0, Medium:1, Low:2 };
+  const todos = [...v.todo].sort((a,b) => (prio[a.priority]??1)-(prio[b.priority]??1));
+  $("#todoList").innerHTML = todos.length ? todos.map(t => `
+    <li>
+      <div class="title">${esc(t.title)}<span class="pill ${esc(t.priority)}">${esc(t.priority)}</span></div>
+      <div class="right">${esc(fmtMoney(t.estCost))}</div>
+      <div class="meta">${[t.dueMiles ? "By " + fmtMiles(t.dueMiles) : "", t.dueDate ? "By " + fmtDate(t.dueDate) : ""].filter(Boolean).join(" or ") || "No due date"}</div>
+      ${t.notes ? `<div class="notes">${esc(t.notes)}</div>` : ""}
+      <div class="actions edit-only">
+        <button class="btn small" data-act="done-todo" data-id="${esc(t.id)}">Mark done</button>
+        <button class="btn small" data-act="edit-todo" data-id="${esc(t.id)}">Edit</button>
+        <button class="btn small" data-act="del-todo" data-id="${esc(t.id)}">Remove</button>
+      </div>
+    </li>`).join("") : `<li class="empty">Nothing on the list.</li>`;
+
+  renderLog();
+
+  // Specs
+  $("#specList").innerHTML = v.specs.length ? v.specs.map(s => `
+    <div><dt>${esc(s.label)}</dt><dd>${esc(s.value)}
+      <span class="edit-only" style="gap:4px;margin-left:6px"><button class="btn link" data-act="edit-spec" data-id="${esc(s.id)}">Edit</button><button class="btn link" data-act="del-spec" data-id="${esc(s.id)}">Remove</button></span>
+    </dd></div>`).join("") : `<div class="empty">No specs saved.</div>`;
+}
+
+function renderLog(){
+  const v = V(); if (!v) return;
+  const q = $("#logSearch").value.trim().toLowerCase();
+  const rows = [...v.log].sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0))
+    .filter(e => !q || [e.title,e.parts,e.notes,e.by].join(" ").toLowerCase().includes(q));
+  $("#logList").innerHTML = rows.length ? rows.map(e => `
+    <li>
+      <div class="title">${esc(e.title)}</div>
+      <div class="right">${esc(fmtMoney(e.cost))}</div>
+      <div class="meta">${[fmtDate(e.date), e.miles != null ? fmtMiles(e.miles) : "", e.by].filter(Boolean).join(", ")}</div>
+      ${e.parts ? `<div class="notes">Parts: ${esc(e.parts)}</div>` : ""}
+      ${e.notes ? `<div class="notes">${esc(e.notes)}</div>` : ""}
+      <div class="actions edit-only">
+        <button class="btn small" data-act="edit-log" data-id="${esc(e.id)}">Edit</button>
+        <button class="btn small" data-act="del-log" data-id="${esc(e.id)}">Remove</button>
+      </div>
+    </li>`).join("") : `<li class="empty">${q ? "No matches." : "No service logged yet."}</li>`;
+  const total = v.log.reduce((s,e) => s + (Number(e.cost)||0), 0);
+  $("#logTotals").textContent = v.log.length ? `${v.log.length} entries, ${fmtMoney(total)} total` : "";
+}
+
+/* ===== Dialog helper ===== */
+function openDlg(dlg, onOk){
+  dlg.returnValue = "";
+  dlg.showModal();
+  dlg.addEventListener("close", async function h(){
+    dlg.removeEventListener("close", h);
+    if (dlg.returnValue === "ok") await onOk();
+  });
+}
+
+/* ===== Edit mode ===== */
+$("#editToggle").onclick = () => {
+  if (!CONFIG.owner) { toast("Set your GitHub username in CONFIG at the bottom of index.html first.", true); return; }
+  $("#tokenIn").value = "";
+  openDlg($("#unlockDlg"), async () => {
+    const t = $("#tokenIn").value.trim(); if (!t) return;
+    try { data = await loadFromApi(t); setToken(t); editing = true; if (!V()) current = data.vehicles[0]?.id; render(); toast("Editing unlocked"); }
+    catch(e){ toast(e.message, true); }
+  });
+};
+$("#lockBtn").onclick = () => { setToken(null); editing = false; render(); toast("Editing locked on this device"); };
+
+$("#vehiclePick").onchange = e => { current = e.target.value; render(); };
+$("#logSearch").oninput = renderLog;
+
+/* Mileage */
+$("#mileageBtn").onclick = () => {
+  const v = V(); $("#mMiles").value = v.mileage ?? "";
+  openDlg($("#mileDlg"), async () => {
+    v.mileage = numOrNull($("#mMiles").value); v.mileageDate = today(); render(); await save(`Update ${v.model} mileage`);
+  });
+};
+
+/* Log entries */
+function logDialog(entry, fromTodo){
+  const v = V(), isNew = !entry;
+  $("#logDlgTitle").textContent = isNew ? "Log service" : "Edit entry";
+  $("#lInterval").innerHTML = `<option value="">None</option>` + v.intervals.map(i => `<option value="${esc(i.id)}">${esc(i.name)}</option>`).join("");
+  const e = entry || { date: today(), miles: v.mileage, title: fromTodo?.title || "", cost: fromTodo?.estCost ?? "", notes: fromTodo?.notes || "" };
+  $("#lDate").value = e.date || ""; $("#lMiles").value = e.miles ?? ""; $("#lTitle").value = e.title || "";
+  $("#lInterval").value = e.intervalId || ""; $("#lCost").value = e.cost ?? ""; $("#lBy").value = e.by || "";
+  $("#lParts").value = e.parts || ""; $("#lNotes").value = e.notes || "";
+  openDlg($("#logDlg"), async () => {
+    const rec = entry || { id: uid() };
+    Object.assign(rec, { date:$("#lDate").value, miles:numOrNull($("#lMiles").value), title:$("#lTitle").value.trim(),
+      intervalId:$("#lInterval").value || null, cost:numOrNull($("#lCost").value), by:$("#lBy").value.trim(),
+      parts:$("#lParts").value.trim(), notes:$("#lNotes").value.trim() });
+    if (isNew) v.log.push(rec);
+    if (fromTodo) v.todo = v.todo.filter(t => t.id !== fromTodo.id);
+    if (rec.miles != null && (v.mileage == null || rec.miles > v.mileage)) { v.mileage = rec.miles; v.mileageDate = rec.date; }
+    render(); await save(`${isNew ? "Log" : "Edit"}: ${rec.title}`);
+  });
+}
+$("#addLogBtn").onclick = () => logDialog();
+
+/* Todo */
+function todoDialog(item){
+  const v = V();
+  $("#todoDlgTitle").textContent = item ? "Edit work item" : "Add work item";
+  const t = item || { priority:"Medium" };
+  $("#tTitle").value = t.title || ""; $("#tPriority").value = t.priority || "Medium"; $("#tCost").value = t.estCost ?? "";
+  $("#tDueMiles").value = t.dueMiles ?? ""; $("#tDueDate").value = t.dueDate || ""; $("#tNotes").value = t.notes || "";
+  openDlg($("#todoDlg"), async () => {
+    const rec = item || { id: uid() };
+    Object.assign(rec, { title:$("#tTitle").value.trim(), priority:$("#tPriority").value, estCost:numOrNull($("#tCost").value),
+      dueMiles:numOrNull($("#tDueMiles").value), dueDate:$("#tDueDate").value || null, notes:$("#tNotes").value.trim() });
+    if (!item) v.todo.push(rec);
+    render(); await save(`${item ? "Edit" : "Add"} work item: ${rec.title}`);
+  });
+}
+$("#addTodoBtn").onclick = () => todoDialog();
+
+/* Specs */
+function specDialog(spec){
+  const v = V();
+  $("#specDlgTitle").textContent = spec ? "Edit spec" : "Add spec";
+  $("#sLabel").value = spec?.label || ""; $("#sValue").value = spec?.value || "";
+  openDlg($("#specDlg"), async () => {
+    const rec = spec || { id: uid() };
+    rec.label = $("#sLabel").value.trim(); rec.value = $("#sValue").value.trim();
+    if (!spec) v.specs.push(rec);
+    render(); await save(`${spec ? "Edit" : "Add"} spec: ${rec.label}`);
+  });
+}
+$("#addSpecBtn").onclick = () => specDialog();
+
+/* Vehicles */
+$("#addVehicleBtn").onclick = () => {
+  ["#vYear","#vMake","#vModel","#vTrim","#vEngine","#vMiles"].forEach(s => $(s).value = "");
+  openDlg($("#vehDlg"), async () => {
+    const v = { id: uid(), year:Number($("#vYear").value), make:$("#vMake").value.trim(), model:$("#vModel").value.trim(),
+      trim:$("#vTrim").value.trim(), engine:$("#vEngine").value.trim(), mileage:numOrNull($("#vMiles").value),
+      mileageDate: $("#vMiles").value ? today() : null, specs:[], log:[], todo:[],
+      intervals:[{ id:uid(), name:"Oil and filter", miles:5000, months:12 }, { id:uid(), name:"Tire rotation", miles:7500, months:null }] };
+    data.vehicles.push(v); current = v.id; render(); await save(`Add vehicle: ${v.year} ${v.make} ${v.model}`);
+  });
+};
+
+/* Schedule */
+function intRow(it){
+  return `<div class="row" data-int="${esc(it.id)}" style="grid-template-columns:2fr 1fr 1fr auto;align-items:end">
+    <div class="field"><label>Item</label><input class="iName" value="${esc(it.name)}" required></div>
+    <div class="field"><label>Miles</label><input class="iMiles" type="number" min="0" value="${esc(it.miles ?? "")}"></div>
+    <div class="field"><label>Months</label><input class="iMonths" type="number" min="0" value="${esc(it.months ?? "")}"></div>
+    <div class="field"><button type="button" class="btn small" aria-label="Remove ${esc(it.name)}" onclick="this.closest('[data-int]').remove()">✕</button></div>
+  </div>`;
+}
+$("#intervalsBtn").onclick = () => {
+  const v = V();
+  $("#intRows").innerHTML = v.intervals.map(intRow).join("");
+  openDlg($("#intDlg"), async () => {
+    v.intervals = [...$("#intRows").querySelectorAll("[data-int]")].map(r => ({
+      id: r.dataset.int, name: r.querySelector(".iName").value.trim(),
+      miles: numOrNull(r.querySelector(".iMiles").value), months: numOrNull(r.querySelector(".iMonths").value)
+    })).filter(i => i.name);
+    render(); await save("Update maintenance schedule");
+  });
+};
+$("#addIntRow").onclick = () => $("#intRows").insertAdjacentHTML("beforeend", intRow({ id:uid(), name:"", miles:null, months:null }));
+
+/* Row actions */
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const v = V(), id = b.dataset.id, act = b.dataset.act;
+  if (act === "edit-log") logDialog(v.log.find(x => x.id === id));
+  if (act === "del-log" && confirm("Remove this service entry?")) { v.log = v.log.filter(x => x.id !== id); render(); await save("Remove service entry"); }
+  if (act === "edit-todo") todoDialog(v.todo.find(x => x.id === id));
+  if (act === "done-todo") logDialog(null, v.todo.find(x => x.id === id));
+  if (act === "del-todo" && confirm("Remove this work item?")) { v.todo = v.todo.filter(x => x.id !== id); render(); await save("Remove work item"); }
+  if (act === "edit-spec") specDialog(v.specs.find(x => x.id === id));
+  if (act === "del-spec" && confirm("Remove this spec?")) { v.specs = v.specs.filter(x => x.id !== id); render(); await save("Remove spec"); }
+});
+
+load();
+</script>
+</body>
+</html>
