@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Garage Log</title>
+<script>try{const t=localStorage.getItem("garageLogTheme");if(t)document.documentElement.dataset.theme=t;}catch{}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -29,6 +30,17 @@
     --ok:#10C27C; --due:#F48F2F; --over:#FD3C3C;
   }
 }
+:root[data-theme="dark"]{
+  --paper:#010205; --card:#19191A; --ink:#FBFCFF; --muted:rgba(246,246,249,.6); --line:rgba(246,246,249,.16);
+  --ok:#10C27C; --due:#F48F2F; --over:#FD3C3C;
+}
+:root{color-scheme:light dark}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+.theme-toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.theme-toggle button{border:none;background:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.875rem;color:var(--muted)}
+.theme-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.theme-toggle button:hover:not([aria-pressed="true"]){color:var(--ink)}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter",system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
@@ -141,6 +153,10 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="top-actions">
       <select class="vehicle-pick" id="vehiclePick" aria-label="Vehicle"></select>
       <button class="btn edit-only" id="addVehicleBtn">Add vehicle</button>
+      <div class="theme-toggle" role="group" aria-label="Color theme">
+        <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
       <button class="btn" id="editToggle">Edit</button>
     </div>
   </header>
@@ -635,6 +651,22 @@ document.addEventListener("click", async e => {
   if (act === "edit-spec") specDialog(v.specs.find(x => x.id === id));
   if (act === "del-spec" && confirm("Remove this spec?")) { v.specs = v.specs.filter(x => x.id !== id); render(); await save("Remove spec"); }
 });
+
+/* Theme: follows the device until you pick Light or Dark; the choice is remembered in this browser */
+function currentTheme(){
+  return document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+}
+function syncThemeButtons(){
+  const t = currentTheme();
+  document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeSet === t)));
+}
+document.querySelectorAll("[data-theme-set]").forEach(b => b.onclick = () => {
+  document.documentElement.dataset.theme = b.dataset.themeSet;
+  try { localStorage.setItem("garageLogTheme", b.dataset.themeSet); } catch {}
+  syncThemeButtons();
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncThemeButtons);
+syncThemeButtons();
 
 load();
 </script>
