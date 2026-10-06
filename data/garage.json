@@ -5,11 +5,11 @@
   "vehicles": [
     {
       "id": "cayenne-2009",
-      "year": 2009,
+      "year": 2006,
       "make": "Porsche",
       "model": "Cayenne",
       "trim": "Base",
-      "engine": "3.6L V6",
+      "engine": "3.2L V6",
       "mileage": 89308,
       "mileageDate": "2026-10-06",
       "specs": [
@@ -180,8 +180,8 @@
           "priority": "High",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Safety item: belt(s) glazed and noisy. Replace the belt, and have the tensioner and idler pulleys checked while it's off. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "estCost": 416.16,
+          "notes": "Safety item: belt(s) glazed and noisy. Replace the belt, and have the tensioner and idler pulleys checked while it's off. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $416.16 incl. tax. Serpentine belt $231 + 0.9 hr labor $159.30."
         },
         {
           "id": "tja-thermostat",
@@ -189,8 +189,8 @@
           "priority": "High",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Thermostat housing is leaking coolant. Replace the housing and thermostat. Keep an eye on the coolant level until it's fixed; overheating is the risk. Good time to do the cooling hoses too. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "estCost": 1652.77,
+          "notes": "Thermostat housing is leaking coolant. Replace the housing and thermostat. Keep an eye on the coolant level until it's fixed; overheating is the risk. Good time to do the cooling hoses too. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $1,652.77 incl. tax. Thermostat assembly $151.78 + 7.9 hr labor $1,398.30. Labor does NOT include bleeding the cooling system; ask what that adds. Hoses aren't on the estimate; with this much labor, ask to add them now."
         },
         {
           "id": "tja-hoses",
@@ -216,8 +216,8 @@
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Transmission pan is leaking. Replace the pan gasket and filter and service the fluid. Log it as Tiptronic transmission fluid when done. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "estCost": 786.15,
+          "notes": "Transmission pan is leaking. Replace the pan gasket and filter and service the fluid. Log it as Tiptronic transmission fluid when done. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $786.15 incl. tax. Pan/gasket 1.9 hr $336.30, filter kit $125, 6 qt fluid $276."
         },
         {
           "id": "tja-controlarms",
@@ -225,8 +225,8 @@
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Replace the control arms and get an alignment afterward. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "estCost": 1884.6,
+          "notes": "Replace the control arms and get an alignment afterward. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $1,884.60 incl. tax. 2 control arms $1,148 ($574 each), lower bushings R&R 2.5 hr $442.50, four-wheel alignment $177."
         },
         {
           "id": "tja-struts",
@@ -238,7 +238,7 @@
           "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
         }
       ],
-      "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
+      "scheduleNote": "Porsche factory schedule for the 2006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
       "tires": {
         "FL": {},
         "FR": {},
