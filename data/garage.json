@@ -10,8 +10,8 @@
       "model": "Cayenne",
       "trim": "Base",
       "engine": "3.6L V6",
-      "mileage": 88000,
-      "mileageDate": "2026-10-04",
+      "mileage": 89308,
+      "mileageDate": "2026-10-06",
       "specs": [
         {
           "id": "s1",
@@ -164,6 +164,78 @@
           "dueDate": null,
           "estCost": 2200,
           "notes": "Clear coat failing on the roof and bumper, so those panels need a sand, paint and clear at a body shop; polishing won't fix them. Then a one-step polish and paint sealant on the whole car. Budget about $1,400 to $3,000 all in: bumper $400-800, roof $700-1,500, one-step polish $200-400, sealant $100-250. Paint first, then polish and blend. Wait about 30 days for new paint to cure before sealing it. Paint quotes: Quality Automall (Rutherford), Jersey Auto Body (Passaic), Dynamic Collision (East Rutherford). Polish: JD Auto Detailing (Clifton) or Get Right Mobile Detailing. Ask each body shop if they blend into adjacent panels and whether the roof can be spot-repaired."
+        },
+        {
+          "id": "tja-wipers",
+          "title": "Replace front wiper blades",
+          "priority": "High",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": 40,
+          "notes": "Safety item: front wipers streaking and worn out. Easy DIY. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-belts",
+          "title": "Replace drive belt(s)",
+          "priority": "High",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Safety item: belt(s) glazed and noisy. Replace the belt, and have the tensioner and idler pulleys checked while it's off. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-thermostat",
+          "title": "Thermostat housing leaking",
+          "priority": "High",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Thermostat housing is leaking coolant. Replace the housing and thermostat. Keep an eye on the coolant level until it's fixed; overheating is the risk. Good time to do the cooling hoses too. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-hoses",
+          "title": "Cooling system hoses are original",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Hoses look original. Worth replacing together with the thermostat housing to save on labor and coolant. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-plugs",
+          "title": "Replace spark plugs",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Spark plugs worn or fouled. Also on the factory schedule; log it as Spark plugs when done to reset the countdown. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-trans",
+          "title": "Transmission pan leaking; service transmission",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Transmission pan is leaking. Replace the pan gasket and filter and service the fluid. Log it as Tiptronic transmission fluid when done. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-controlarms",
+          "title": "Control arm bushings cracked and torn",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Replace the control arms and get an alignment afterward. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "tja-struts",
+          "title": "Front and rear struts look original",
+          "priority": "Low",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
