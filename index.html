@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Garage Log</title>
-<script>try{const t=localStorage.getItem("garageLogTheme");if(t)document.documentElement.dataset.theme=t;}catch{}</script>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t;}catch{}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
 <style>
 /* Styling follows the Porsche Design System's public tokens: monochrome canvas,
    near-black primary, grey surface, sparing status colors. Inter stands in for
@@ -37,10 +37,14 @@
 :root{color-scheme:light dark}
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{color-scheme:dark}
-.theme-toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
-.theme-toggle button{border:none;background:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.875rem;color:var(--muted)}
-.theme-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.theme-toggle button:hover:not([aria-pressed="true"]){color:var(--ink)}
+.ms{font-family:"Material Symbols Rounded";font-weight:normal;font-style:normal;font-size:24px;line-height:1;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-smoothing:antialiased;flex:none;font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;user-select:none;width:1em;overflow:hidden}
+.theme-toggle{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;transition:background-color .15s}
+.theme-toggle:hover{background:var(--card)}
+.theme-toggle:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.theme-toggle .ms{font-size:22px}
+/* Short color fade while switching, skipped for reduced motion */
+:root.theme-fading,:root.theme-fading *,:root.theme-fading *::before,:root.theme-fading *::after{transition:background-color .3s ease,color .3s ease,border-color .3s ease,fill .3s ease !important}
+@media (prefers-reduced-motion:reduce){:root.theme-fading,:root.theme-fading *,:root.theme-fading *::before,:root.theme-fading *::after{transition:none !important}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter",system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
@@ -186,10 +190,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="top-actions">
       <select class="vehicle-pick" id="vehiclePick" aria-label="Vehicle"></select>
       <button class="btn edit-only" id="addVehicleBtn">Add vehicle</button>
-      <div class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
-        <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
-      </div>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode"><span class="ms" aria-hidden="true">dark_mode</span></button>
       <button class="btn" id="editToggle">Edit</button>
     </div>
   </header>
@@ -797,21 +798,31 @@ document.addEventListener("click", e => {
   });
 });
 
-/* Theme: follows the device until you pick Light or Dark; the choice is remembered in this browser */
-function currentTheme(){
-  return document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-}
-function syncThemeButtons(){
-  const t = currentTheme();
-  document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeSet === t)));
-}
-document.querySelectorAll("[data-theme-set]").forEach(b => b.onclick = () => {
-  document.documentElement.dataset.theme = b.dataset.themeSet;
-  try { localStorage.setItem("garageLogTheme", b.dataset.themeSet); } catch {}
-  syncThemeButtons();
-});
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncThemeButtons);
-syncThemeButtons();
+/* Theme: sun/moon icon toggle (same element as raysandesigns.com). Follows the device until clicked; the choice is remembered. */
+(() => {
+  const root = document.documentElement;
+  const mq = matchMedia("(prefers-color-scheme: dark)");
+  const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
+  const paint = () => {
+    const dark = current() === "dark";
+    document.querySelectorAll(".theme-toggle").forEach(b => {
+      b.setAttribute("aria-pressed", String(dark));
+      b.querySelector(".ms").textContent = dark ? "light_mode" : "dark_mode";
+      const label = dark ? "Switch to light mode" : "Switch to dark mode";
+      b.setAttribute("aria-label", label); b.title = label;
+    });
+  };
+  document.querySelectorAll(".theme-toggle").forEach(b => b.addEventListener("click", () => {
+    const next = current() === "dark" ? "light" : "dark";
+    root.classList.add("theme-fading");
+    root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch {}
+    paint();
+    setTimeout(() => root.classList.remove("theme-fading"), 350);
+  }));
+  mq.addEventListener("change", paint);
+  paint();
+})();
 
 load();
 </script>
