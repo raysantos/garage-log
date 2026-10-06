@@ -155,6 +155,15 @@
           "dueDate": null,
           "estCost": null,
           "notes": "Mechanic who worked on the car heard an exhaust leak; louder than normal but no running problems noticed. Have the source pinpointed (manifold gasket, flex pipe or a joint/clamp). Listen for ticking on cold start and watch for exhaust smell in the cabin."
+        },
+        {
+          "id": "tpaint26",
+          "title": "Respray roof and bumper (clear coat), polish and seal the rest",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": 2200,
+          "notes": "Clear coat failing on the roof and bumper, so those panels need a sand, paint and clear at a body shop; polishing won't fix them. Then a one-step polish and paint sealant on the whole car. Budget about $1,400 to $3,000 all in: bumper $400-800, roof $700-1,500, one-step polish $200-400, sealant $100-250. Paint first, then polish and blend. Wait about 30 days for new paint to cure before sealing it. Paint quotes: Quality Automall (Rutherford), Jersey Auto Body (Passaic), Dynamic Collision (East Rutherford). Polish: JD Auto Detailing (Clifton) or Get Right Mobile Detailing. Ask each body shop if they blend into adjacent panels and whether the roof can be spot-repaired."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2009 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
