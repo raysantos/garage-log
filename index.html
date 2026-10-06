@@ -106,29 +106,31 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 
 
 
-/* Service timeline */
-.timeline{list-style:none;margin:0;padding:0;position:relative}
-.timeline::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
-.tl-node{position:relative;display:grid;grid-template-columns:24px 180px 1fr;gap:0 20px;padding:0 0 28px}
-.tl-node:last-child{padding-bottom:0}
-.tl-dot{width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--line);margin-top:4px;position:relative;z-index:1}
+/* Service timeline: horizontal, runs off the right edge and scrolls */
+.timeline-wrap{position:relative;margin-right:calc(50% - 50vw)}
+.timeline{list-style:none;margin:0;padding:0 16px 12px 0;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--line) transparent;overscroll-behavior-x:contain}
+.timeline::-webkit-scrollbar{height:6px}
+.timeline::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.tl-node{position:relative;flex:0 0 240px;padding-right:20px;scroll-snap-align:start}
+.tl-node::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:var(--line)}
+.tl-node:first-child::before{left:12px}
+.tl-dot{display:block;width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--line);position:relative;z-index:1}
 .tl-node.now .tl-dot{background:var(--due);border-color:var(--due)}
 .tl-node.now.over .tl-dot{background:var(--over);border-color:var(--over)}
 .tl-node.next .tl-dot{border-color:var(--ink);border-width:6px}
-.tl-when{padding-top:2px}
-.tl-mark{font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.tl-when{margin:12px 0 10px}
+.tl-mark{font-family:var(--font-head);font-weight:600;font-size:1.375rem;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tl-node.now .tl-mark{color:var(--due)}
 .tl-node.now.over .tl-mark{color:var(--over)}
-.tl-away{font-size:.875rem;color:var(--muted);margin-top:2px}
-.tl-items{display:grid;gap:8px;min-width:0}
-.tl-item{background:var(--card);border-radius:var(--radius-lg);padding:12px 16px}
-.tl-item .name{font-weight:600}
-.tl-item .meta{font-size:.8125rem;color:var(--muted);margin-top:2px}
-@media (max-width:640px){
-  .tl-node{grid-template-columns:24px 1fr;gap:6px 14px}
-  .tl-items{grid-column:2}
-}
-
+.tl-away{font-size:.8125rem;color:var(--muted);margin-top:2px}
+.tl-items{display:grid;gap:6px}
+.tl-item{background:var(--card);border-radius:var(--radius-sm);padding:9px 12px}
+.tl-item .name{font-weight:600;font-size:.9375rem;line-height:1.3}
+.tl-item .meta{font-size:.75rem;color:var(--muted);margin-top:2px;line-height:1.35}
+.tl-node.now{flex-basis:700px}
+.tl-node.now .tl-items{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1000px){.tl-node.now{flex-basis:480px}.tl-node.now .tl-items{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.tl-node{flex-basis:200px}.tl-node.now{flex-basis:300px}.tl-node.now .tl-items{grid-template-columns:1fr}}
 /* Tires */
 .tires{display:grid;grid-template-columns:1fr minmax(160px,220px) 1fr;gap:20px 28px;align-items:center}
 .tire-col{display:grid;grid-template-rows:1fr 1fr;gap:20px;align-self:stretch}
@@ -241,7 +243,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   <section>
     <div class="sec-head"><h2>Recommended service</h2><button class="btn small edit-only" id="intervalsBtn">Edit schedule</button></div>
     <p class="sec-intro" id="schedIntro"></p>
-    <ol class="timeline" id="dueTags"></ol>
+    <div class="timeline-wrap"><ol class="timeline" id="dueTags" tabindex="0" aria-label="Service timeline, scroll sideways for later milestones"></ol></div>
   </section>
 
   <section>
@@ -509,10 +511,11 @@ function intervalStatus(v, it){
     if (pastMiles || pastAge) {
       const passed = pastMiles ? Math.floor(v.mileage / it.miles) * it.miles : null;
       const why = pastMiles ? `No record since the ${fmtMiles(passed)} mark.` : `No record, and the car is past ${Math.round(it.months/12)} years.`;
-      return { cls:"due", status:"Due, no record", meta: `${scheduleText(it)}. ${why}${note}` };
+      const short = pastMiles ? `No record since ${fmtMiles(passed)}` : `No record, ${Math.round(it.months/12)}+ yrs`;
+      return { cls:"due", status:"Due, no record", short, meta: `${scheduleText(it)}. ${why}${note}` };
     }
     const next = it.miles && v.mileage != null ? Math.ceil((v.mileage + 1) / it.miles) * it.miles : null;
-    return { cls:"unknown", status: next ? `Due at ${fmtMiles(next)}` : "Not logged yet", meta: `${scheduleText(it)}.${note}` };
+    return { cls:"unknown", status: next ? `Due at ${fmtMiles(next)}` : "Not logged yet", short: scheduleText(it), meta: `${scheduleText(it)}.${note}` };
   }
   let milesLeft = null, monthsLeft = null, parts = [];
   if (it.miles && last.miles != null && v.mileage != null) {
@@ -530,7 +533,7 @@ function intervalStatus(v, it){
   else if (soon) { cls = "due"; status = "Due soon"; }
   else if (milesLeft != null) status = `${Number(Math.round(milesLeft)).toLocaleString()} mi left`;
   else if (monthsLeft != null) status = `${Math.round(monthsLeft)} mo left`;
-  return { cls, status, meta: `Last done ${fmtDate(last.date)}${last.miles != null ? " at " + fmtMiles(last.miles) : ""}. Next ${parts.join(" or ") || "—"}.` };
+  return { cls, status, short: `Last done ${fmtDate(last.date)}`, meta: `Last done ${fmtDate(last.date)}${last.miles != null ? " at " + fmtMiles(last.miles) : ""}. Next ${parts.join(" or ") || "—"}.` };
 }
 function nextDue(v, it){
   const last = v.log.filter(e => e.intervalId === it.id).sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0))[0];
@@ -582,20 +585,20 @@ function render(){
   const nowRows = rows.filter(r => r.s.cls === "over" || r.s.cls === "due");
   // Upcoming nodes include everything with a future milestone, so the road ahead is visible even when items are due now
   const later = rows.filter(r => !nowRows.includes(r) || (r.n.miles != null && v.mileage != null && r.n.miles > v.mileage))
-    .map(r => nowRows.includes(r) ? { ...r, s:{ ...r.s, meta: `${scheduleText(r.it)}. Next factory milestone.` } } : r);
+    .map(r => nowRows.includes(r) ? { ...r, s:{ ...r.s, short: scheduleText(r.it), meta: `${scheduleText(r.it)}. Next factory milestone.` } } : r);
   const byMiles = {}, byDate = {};
   later.forEach(r => {
     if (r.n.miles != null) (byMiles[r.n.miles] ||= []).push(r);
     else if (r.n.date) (byDate[r.n.date] ||= []).push(r);
     else (byDate["~"] ||= []).push(r);
   });
-  const item = r => `<div class="tl-item"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.meta)}</div></div>`;
+  const item = r => `<div class="tl-item" title="${esc(r.s.meta)}"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.short || r.s.meta)}</div></div>`;
   const nodes = [];
   if (nowRows.length) {
     const anyOver = nowRows.some(r => r.s.cls === "over");
     nodes.push(`<li class="tl-node now ${anyOver ? "over" : ""}"><span class="tl-dot" aria-hidden="true"></span>
       <div class="tl-when"><div class="tl-mark">Due now</div><div class="tl-away">${nowRows.length} ${nowRows.length === 1 ? "item" : "items"}</div></div>
-      <div class="tl-items">${nowRows.map(r => item({ ...r, s:{ ...r.s, meta: r.s.status + ". " + r.s.meta } })).join("")}</div></li>`);
+      <div class="tl-items">${nowRows.map(item).join("")}</div></li>`);
   }
   Object.keys(byMiles).map(Number).sort((a,b) => a-b).forEach((m, i) => {
     const away = v.mileage != null ? m - v.mileage : null;
