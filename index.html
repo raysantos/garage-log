@@ -105,6 +105,30 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 .tag .meta{font-size:.8125rem;color:var(--muted)}
 
 
+
+/* Service timeline */
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
+.tl-node{position:relative;display:grid;grid-template-columns:24px 180px 1fr;gap:0 20px;padding:0 0 28px}
+.tl-node:last-child{padding-bottom:0}
+.tl-dot{width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--line);margin-top:4px;position:relative;z-index:1}
+.tl-node.now .tl-dot{background:var(--due);border-color:var(--due)}
+.tl-node.now.over .tl-dot{background:var(--over);border-color:var(--over)}
+.tl-node.next .tl-dot{border-color:var(--ink);border-width:6px}
+.tl-when{padding-top:2px}
+.tl-mark{font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.tl-node.now .tl-mark{color:var(--due)}
+.tl-node.now.over .tl-mark{color:var(--over)}
+.tl-away{font-size:.875rem;color:var(--muted);margin-top:2px}
+.tl-items{display:grid;gap:8px;min-width:0}
+.tl-item{background:var(--card);border-radius:var(--radius-lg);padding:12px 16px}
+.tl-item .name{font-weight:600}
+.tl-item .meta{font-size:.8125rem;color:var(--muted);margin-top:2px}
+@media (max-width:640px){
+  .tl-node{grid-template-columns:24px 1fr;gap:6px 14px}
+  .tl-items{grid-column:2}
+}
+
 /* Tires */
 .tires{display:grid;grid-template-columns:1fr minmax(160px,220px) 1fr;gap:20px 28px;align-items:center}
 .tire-col{display:grid;grid-template-rows:1fr 1fr;gap:20px;align-self:stretch}
@@ -217,7 +241,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   <section>
     <div class="sec-head"><h2>Recommended service</h2><button class="btn small edit-only" id="intervalsBtn">Edit schedule</button></div>
     <p class="sec-intro" id="schedIntro"></p>
-    <div class="tags" id="dueTags"></div>
+    <ol class="timeline" id="dueTags"></ol>
   </section>
 
   <section>
@@ -508,6 +532,11 @@ function intervalStatus(v, it){
   else if (monthsLeft != null) status = `${Math.round(monthsLeft)} mo left`;
   return { cls, status, meta: `Last done ${fmtDate(last.date)}${last.miles != null ? " at " + fmtMiles(last.miles) : ""}. Next ${parts.join(" or ") || "—"}.` };
 }
+function nextDue(v, it){
+  const last = v.log.filter(e => e.intervalId === it.id).sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0))[0];
+  if (last) return { miles: it.miles && last.miles != null ? last.miles + it.miles : null, date: it.months && last.date ? addMonths(last.date, it.months) : null };
+  return { miles: it.miles && v.mileage != null ? Math.ceil((v.mileage + 1) / it.miles) * it.miles : null, date: null };
+}
 function scheduleText(it){
   const yrs = it.months && it.months % 12 === 0 ? `${it.months/12} ${it.months === 12 ? "year" : "years"}` : it.months ? `${it.months} months` : null;
   const q = []; if (it.miles) q.push(`${Number(it.miles).toLocaleString()} mi`); if (yrs) q.push(yrs);
@@ -548,15 +577,38 @@ function render(){
   $("#odoNote").textContent = v.mileage != null ? `miles${v.mileageDate ? ", as of " + fmtDate(v.mileageDate) : ""}` : "Mileage not set";
 
   $("#schedIntro").textContent = v.scheduleNote || "Each item is due at whichever comes first, its miles or its time since you last logged it.";
-  // Recommended service, most urgent first
-  const rank = { over:0, due:1, ok:2, unknown:3 };
-  const tags = v.intervals.map(it => ({ it, s: intervalStatus(v, it) })).sort((a,b) => rank[a.s.cls]-rank[b.s.cls]);
-  $("#dueTags").innerHTML = tags.length ? tags.map(({it,s}) => `
-    <div class="tag ${s.cls}">
-      <div class="name">${esc(it.name)}</div>
-      <div class="status">${esc(s.status)}</div>
-      <div class="meta">${esc(s.meta)}</div>
-    </div>`).join("") : `<div class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</div>`;
+  // Recommended service as a timeline: due now first, then upcoming mileage milestones, then date-only items
+  const rows = v.intervals.map(it => ({ it, s: intervalStatus(v, it), n: nextDue(v, it) }));
+  const nowRows = rows.filter(r => r.s.cls === "over" || r.s.cls === "due");
+  // Upcoming nodes include everything with a future milestone, so the road ahead is visible even when items are due now
+  const later = rows.filter(r => !nowRows.includes(r) || (r.n.miles != null && v.mileage != null && r.n.miles > v.mileage))
+    .map(r => nowRows.includes(r) ? { ...r, s:{ ...r.s, meta: `${scheduleText(r.it)}. Next factory milestone.` } } : r);
+  const byMiles = {}, byDate = {};
+  later.forEach(r => {
+    if (r.n.miles != null) (byMiles[r.n.miles] ||= []).push(r);
+    else if (r.n.date) (byDate[r.n.date] ||= []).push(r);
+    else (byDate["~"] ||= []).push(r);
+  });
+  const item = r => `<div class="tl-item"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.meta)}</div></div>`;
+  const nodes = [];
+  if (nowRows.length) {
+    const anyOver = nowRows.some(r => r.s.cls === "over");
+    nodes.push(`<li class="tl-node now ${anyOver ? "over" : ""}"><span class="tl-dot" aria-hidden="true"></span>
+      <div class="tl-when"><div class="tl-mark">Due now</div><div class="tl-away">${nowRows.length} ${nowRows.length === 1 ? "item" : "items"}</div></div>
+      <div class="tl-items">${nowRows.map(r => item({ ...r, s:{ ...r.s, meta: r.s.status + ". " + r.s.meta } })).join("")}</div></li>`);
+  }
+  Object.keys(byMiles).map(Number).sort((a,b) => a-b).forEach((m, i) => {
+    const away = v.mileage != null ? m - v.mileage : null;
+    nodes.push(`<li class="tl-node ${i === 0 && !nowRows.length ? "next" : i === 0 ? "next" : ""}"><span class="tl-dot" aria-hidden="true"></span>
+      <div class="tl-when"><div class="tl-mark">${esc(fmtMiles(m))}</div>${away != null ? `<div class="tl-away">in ${away.toLocaleString()} mi</div>` : ""}</div>
+      <div class="tl-items">${byMiles[m].map(item).join("")}</div></li>`);
+  });
+  Object.keys(byDate).sort().forEach(d => {
+    nodes.push(`<li class="tl-node"><span class="tl-dot" aria-hidden="true"></span>
+      <div class="tl-when"><div class="tl-mark">${d === "~" ? "Unscheduled" : esc(fmtDate(d))}</div></div>
+      <div class="tl-items">${byDate[d].map(item).join("")}</div></li>`);
+  });
+  $("#dueTags").innerHTML = nodes.length ? nodes.join("") : `<li class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</li>`;
 
   // Work needed
   const prio = { High:0, Medium:1, Low:2 };
