@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <path id="wrench" d="M0 -64 a46 46 0 0 1 46 46 a46 46 0 0 1 -32 43 v72 a14 14 0 0 1 -28 0 v-72 a46 46 0 0 1 -32 -43 a46 46 0 0 1 46 -46 z"/>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#010205"/>
+  <!-- car, side view -->
+  <g transform="translate(-20 -52)" fill="none" stroke="#FBFCFF" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M86 300 v-34 q0-20 20-24 l40-8 l44-48 q12-12 30-12 h92 q18 0 30 12 l40 46 l38 8 q22 4 22 26 v34 h-34"/>
+    <path d="M190 300 h110"/>
+    <circle cx="150" cy="306" r="30"/>
+    <circle cx="340" cy="306" r="30"/>
+    <path d="M196 234 l30-34 h52 v34 z" stroke-width="16"/>
+  </g>
+  <!-- wrench, cut out from the car with a dark outline -->
+  <g transform="translate(372 360) rotate(-45) scale(.95)">
+    <use href="#wrench" fill="#010205" stroke="#010205" stroke-width="24" stroke-linejoin="round"/>
+    <use href="#wrench" fill="#FBFCFF"/>
+    <path fill="#010205" d="M-15 -72 h30 v44 h-30 z"/>
+  </g>
+</svg>
