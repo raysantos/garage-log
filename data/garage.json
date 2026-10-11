@@ -4,7 +4,7 @@
   },
   "vehicles": [
     {
-      "id": "cayenne-2009",
+      "id": "cayenne-2006",
       "year": 2006,
       "make": "Porsche",
       "model": "Cayenne",
@@ -16,12 +16,12 @@
         {
           "id": "s1",
           "label": "Engine oil",
-          "value": "5W-30, or 0W-40 / 5W-40 with Porsche A40 approval. Confirm in manual."
+          "value": "5W-30, 0W-40 or 5W-40 with Porsche A40 approval. Confirm in manual."
         },
         {
           "id": "s2",
           "label": "Oil capacity",
-          "value": "6.9 L (7.3 qt) with filter. Start with 6 qt, then use the dipstick."
+          "value": "6.3 L (6.7 qt) with filter. Start with 6 qt, then use the dipstick."
         },
         {
           "id": "s3",
@@ -42,6 +42,16 @@
           "id": "s6",
           "label": "Belly pan",
           "value": "T25/T27 Torx and 10 mm"
+        },
+        {
+          "id": "s7",
+          "label": "Paint",
+          "value": "Black 041 (solid) or Basalt Black Metallic C9Z. Check the vehicle data sticker to confirm."
+        },
+        {
+          "id": "s8",
+          "label": "Brake calipers",
+          "value": "Red Brembo, not standard on the base V6 (red came on the 955 Turbo). Match pads and rotors to the calipers, not the VIN."
         }
       ],
       "intervals": [
@@ -55,9 +65,9 @@
         {
           "id": "maint",
           "name": "Maintenance service",
-          "miles": 40000,
-          "months": 48,
-          "note": "Full inspection plus cabin (pollen) filter."
+          "miles": 20000,
+          "months": 24,
+          "note": "Alternates minor and major service. Inspection, plus cabin filter."
         },
         {
           "id": "plugs",
@@ -238,7 +248,7 @@
           "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
         }
       ],
-      "scheduleNote": "Porsche factory schedule for the 2006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
+      "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
       "tires": {
         "FL": {},
         "FR": {},
