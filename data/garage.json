@@ -52,6 +52,11 @@
           "id": "s8",
           "label": "Brake calipers",
           "value": "Red Brembo, not standard on the base V6 (red came on the 955 Turbo). Match pads and rotors to the calipers, not the VIN."
+        },
+        {
+          "id": "s9",
+          "label": "Head unit",
+          "value": "Aftermarket Android unit, not factory PCM. Rockchip-based (model auto_rk_t10), 9-inch screen, 4 GB RAM, 64 GB storage."
         }
       ],
       "intervals": [
