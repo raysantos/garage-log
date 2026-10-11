@@ -56,7 +56,7 @@
         {
           "id": "s9",
           "label": "Head unit",
-          "value": "Aftermarket Android unit, not factory PCM. Rockchip-based (model auto_rk_t10), 9-inch screen, 4 GB RAM, 64 GB storage."
+          "value": "Aftermarket Android unit, not factory PCM. Rockchip-based (model auto_rk_t10), 9-inch screen, 4 GB RAM, 64 GB storage. Aftermarket backup camera wired to it."
         }
       ],
       "intervals": [
@@ -251,6 +251,15 @@
           "dueDate": null,
           "estCost": null,
           "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+        },
+        {
+          "id": "t030q58",
+          "title": "Aftermarket backup camera not working",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
