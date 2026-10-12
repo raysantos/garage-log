@@ -260,6 +260,15 @@
           "dueDate": null,
           "estCost": null,
           "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself."
+        },
+        {
+          "id": "t3mchft",
+          "title": "Engine sounds loud and fuel use seems high",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "People say the engine sounds loud and it uses gas quickly. Pre-purchase check found no exhaust leak, but a mechanic who worked on it heard one. Next steps: track MPG over a few fill-ups, scan for codes and fuel trims with an OBD-II reader, and do the overdue spark plugs and air filter. Have a shop listen on a cold start for exhaust leak or timing chain noise."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
