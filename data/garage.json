@@ -157,18 +157,20 @@
           "by": "TJA Auto Group (Lyndhurst)",
           "parts": "",
           "notes": "Fixes the leaking transmission pan. Cost is the 10/6 estimate (RO 11622); update with the final invoice amount."
+        },
+        {
+          "id": "l-oil-1022",
+          "date": "2026-10-22",
+          "miles": null,
+          "title": "Oil and filter change",
+          "intervalId": "oil",
+          "cost": null,
+          "by": "TJA Auto Group (Lyndhurst)",
+          "parts": "",
+          "notes": "Done with the thermostat, belt and transmission work. Add cost, oil type and mileage from the invoice."
         }
       ],
       "todo": [
-        {
-          "id": "t1",
-          "title": "First DIY oil change",
-          "priority": "High",
-          "dueMiles": null,
-          "dueDate": null,
-          "estCost": 100,
-          "notes": "Ramps, 36 mm filter socket, 19 mm socket, 8 qt oil, Mahle OX160D, new drain plug."
-        },
         {
           "id": "t2",
           "title": "Passenger headlight: water inside the lens",
