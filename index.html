@@ -239,7 +239,6 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .history-filter{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .history-filter input{flex:1;min-width:160px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
 .totals{font-size:.875rem;color:var(--muted);margin-top:12px}
-.list .running{grid-column:2;grid-row:2;text-align:right;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* Spending */
 .spend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
@@ -810,15 +809,12 @@ function renderLog(){
   const v = V(); if (!v) return;
   const q = $("#logSearch").value.trim().toLowerCase();
   const sorted = [...v.log].sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.miles||0)-(a.miles||0));
-  const run = {}; let acc = 0;
-  [...sorted].reverse().forEach(e => { acc += Number(e.cost)||0; run[e.id] = acc; });
   const rows = sorted
     .filter(e => !q || [e.title,e.parts,e.notes,e.by].join(" ").toLowerCase().includes(q));
   $("#logList").innerHTML = rows.length ? rows.map(e => `
     <li>
       <div class="title">${esc(e.title)}</div>
       <div class="right">${esc(fmtMoney(e.cost))}</div>
-      ${Number(e.cost) > 0 ? `<div class="running">${esc(fmtMoney(Math.round(run[e.id]*100)/100))} to date</div>` : ""}
       <div class="meta">${[fmtDate(e.date), e.miles != null ? fmtMiles(e.miles) : "", e.by].filter(Boolean).join(", ")}</div>
       ${e.parts ? `<div class="notes">Parts: ${esc(e.parts)}</div>` : ""}
       ${e.notes ? `<div class="notes">${esc(e.notes)}</div>` : ""}
