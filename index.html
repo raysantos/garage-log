@@ -109,9 +109,10 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 
 
 
-/* Service timeline: horizontal, runs off the right edge and scrolls */
-.timeline-wrap{position:relative;margin-right:calc(50% - 50vw)}
-.timeline{list-style:none;margin:0;padding:0 16px 12px 0;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--line) transparent;overscroll-behavior-x:contain}
+/* Service timeline: horizontal, runs edge to edge of the window and scrolls */
+html,body{overflow-x:clip}
+.timeline-wrap{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+.timeline{--edge:max(16px,calc((100vw - 1088px) / 2));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--line) transparent;overscroll-behavior-x:contain}
 .timeline::-webkit-scrollbar{height:6px}
 .timeline::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
 .tl-node{position:relative;flex:0 0 240px;padding-right:20px;scroll-snap-align:start}
