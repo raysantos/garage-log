@@ -199,7 +199,7 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Front dome lights and rear passenger overhead lights are both out. Check the interior lighting fuse first, then bulbs and door switches. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues.",
+          "notes": "Front dome lights and rear passenger overhead lights are both out. Check the interior lighting fuse first, then bulbs and door switches. Recommended to have Zippo's Car Stereo (Belleville) diagnose this along with the other aftermarket electrical issues.",
           "category": "Electrical"
         },
         {
@@ -289,7 +289,7 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues.",
+          "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself. Recommended to have Zippo's Car Stereo (Belleville) diagnose this along with the other aftermarket electrical issues.",
           "category": "Electrical"
         },
         {
@@ -304,12 +304,12 @@
         },
         {
           "id": "tzippos",
-          "title": "Aftermarket electrical diagnosis at Zippo's (Lyndhurst)",
+          "title": "Aftermarket electrical diagnosis at Zippo's (Belleville)",
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "TJA recommended (10/28/2026) taking the car to Zippo's Car Stereo in Lyndhurst to look at the radio and electrical issues, since they likely trace back to the aftermarket head unit and backup camera install. Have them check: backup camera not working, interior dome and rear overhead lights out, and the head unit wiring/fuses.",
+          "notes": "TJA recommended (10/28/2026) taking the car to Zippo's Car Stereo (745 Washington Ave, Belleville) to look at the radio and electrical issues, since they likely trace back to the aftermarket head unit and backup camera install. Have them check: backup camera not working, interior dome and rear overhead lights out, and the head unit wiring/fuses.",
           "category": "Electrical"
         }
       ],
@@ -320,6 +320,28 @@
         "RL": {},
         "RR": {}
       }
+    }
+  ],
+  "contacts": [
+    {
+      "id": "c-tja",
+      "name": "TJA Auto Care",
+      "role": "Mechanic",
+      "address": "161 Ridge Road, Lyndhurst, NJ 07071",
+      "phone": "(201) 935-2208",
+      "email": "tjaautocare@gmail.com",
+      "website": "https://tjaautocarenj.com",
+      "notes": "Customer ID 4311. Parts and labor warranty 24 months or 24,000 miles from 10/28/2026 (invoice 11656)."
+    },
+    {
+      "id": "c-zippos",
+      "name": "Zippo's Car Stereo",
+      "role": "Car audio and electrical",
+      "address": "745 Washington Ave, Belleville, NJ 07109",
+      "phone": "(973) 759-6800",
+      "email": null,
+      "website": "https://zipposmobile.com",
+      "notes": "Recommended by TJA for the head unit, backup camera and interior light issues. Second location: 918 Route 22 East, North Plainfield, (908) 756-3922."
     }
   ]
 }

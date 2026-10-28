@@ -239,6 +239,17 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 
 /* Specs */
 dl.specs{margin:0;border-top:1px solid var(--line)}
+
+/* Contacts */
+.contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.contact{background:var(--card);border-radius:var(--radius-lg);padding:16px}
+.contact .c-name{font-weight:600}
+.contact .c-role{font-size:.8125rem;color:var(--muted);margin-top:2px}
+.contact .c-lines{display:grid;gap:6px;margin-top:12px;font-size:.9375rem}
+.contact .c-lines a{color:inherit;text-decoration:none;display:flex;gap:10px;align-items:flex-start;overflow-wrap:anywhere}
+.contact .c-lines a:hover span{text-decoration:underline}
+.contact .c-lines svg{flex:none;margin-top:3px;color:var(--muted)}
+.contact .c-notes{font-size:.8125rem;color:var(--muted);margin-top:12px}
 dl.specs div{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 dl.specs dt{color:var(--muted);font-size:.9375rem}
 dl.specs dd{margin:0}
@@ -356,6 +367,10 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
       <section>
         <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
         <dl class="specs" id="specList"></dl>
+      </section>
+      <section>
+        <div class="sec-head"><h2>Contacts</h2></div>
+        <ul class="contacts" id="contactList"></ul>
       </section>
     </div>
   </div>
@@ -736,6 +751,7 @@ function render(){
 
   renderLog();
   renderTires();
+  renderContacts();
 
   // Specs
   $("#specList").innerHTML = v.specs.length ? v.specs.map(s => `
@@ -823,6 +839,27 @@ function renderOdometer(miles){
   };
   paint(from);
   odoAnim = requestAnimationFrame(step);
+}
+
+/* ===== Contacts ===== */
+function renderContacts(){
+  const list = data?.contacts || [];
+  const ic = d => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const pin = ic('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>');
+  const phone = ic('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>');
+  const mail = ic('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>');
+  const web = ic('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>');
+  $("#contactList").innerHTML = list.length ? list.map(c => `
+    <li class="contact">
+      <div class="c-name">${esc(c.name)}</div>${c.role ? `<div class="c-role">${esc(c.role)}</div>` : ""}
+      <div class="c-lines">
+        ${c.phone ? `<a href="tel:${esc(c.phone.replace(/[^0-9+]/g, ""))}">${phone}<span>${esc(c.phone)}</span></a>` : ""}
+        ${c.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" rel="noopener">${pin}<span>${esc(c.address)}</span></a>` : ""}
+        ${c.email ? `<a href="mailto:${esc(c.email)}">${mail}<span>${esc(c.email)}</span></a>` : ""}
+        ${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${web}<span>${esc(c.website.replace(/^https?:\/\//, ""))}</span></a>` : ""}
+      </div>
+      ${c.notes ? `<div class="c-notes">${esc(c.notes)}</div>` : ""}
+    </li>`).join("") : `<li class="empty">No contacts saved.</li>`;
 }
 
 /* ===== Timeline arrows: step one column at a time ===== */
