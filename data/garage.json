@@ -188,6 +188,17 @@
           "by": "TJA Auto Care (Lyndhurst)",
           "parts": "",
           "notes": "Environmental charge $42.69, shop supplies $42.69, tax $5.66. Invoice 11656 total $3,125.69."
+        },
+        {
+          "id": "l-ppi-1006",
+          "date": "2026-10-06",
+          "miles": 89308,
+          "title": "Pre-purchase inspection",
+          "intervalId": null,
+          "cost": 194.77,
+          "by": "TJA Auto Care (Lyndhurst)",
+          "parts": "",
+          "notes": "Pre-purchase inspection, 1.0 hr labor $177.00 + tax $11.73; multi-point inspection no charge; environmental charge and shop supplies $5.68 + tax $0.36. RO 11622. Findings are in Work needed."
         }
       ],
       "todo": [
