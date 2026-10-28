@@ -144,7 +144,8 @@ html,body{overflow-x:clip}
 /* Due now continues across extra columns; those columns keep the line but drop the dot and label */
 .tl-node.cont .tl-dot{visibility:hidden}
 .tl-node.cont .tl-when{visibility:hidden}
-@media (max-width:640px){.tl-node{flex-basis:200px}}
+/* Phones: one full-width column at a time, swipe to the next */
+@media (max-width:640px){.timeline{--fade:16px}.tl-node{flex-basis:calc(100vw - 32px)}}
 .tl-nav{display:flex;gap:6px;align-items:center}
 .tl-arrow{display:inline-grid;place-items:center;width:36px;height:36px;padding:0;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
 .tl-arrow:hover:not(:disabled){background:var(--card)}
@@ -552,6 +553,9 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const uid = () => Math.random().toString(36).slice(2,9);
 const fmtMiles = n => (n == null || n === "") ? "—" : Number(n).toLocaleString() + " mi";
 const TODO_CATS = ["Mechanical", "Electrical", "Bodywork"];
+// Timeline stacks: 3 items per column on wider screens, one long column per milestone on phones
+const TL_PHONE = matchMedia("(max-width:640px)");
+const TL_ROWS = () => TL_PHONE.matches ? Infinity : 3;
 let todoTab = (() => { try { return localStorage.getItem("todoTab") || "Mechanical"; } catch { return "Mechanical"; } })();
 const fmtMoney = n => { if (n == null || n === "") return ""; const x = Number(n), f = Number.isInteger(x) ? 0 : 2; return "$" + x.toLocaleString(undefined,{minimumFractionDigits:f,maximumFractionDigits:f}); };
 const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}) : "";
@@ -733,20 +737,20 @@ function render(){
   Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date) || (a.miles||0)-(b.miles||0)).forEach(g => {
     const total = g.items.reduce((s,e) => s + (Number(e.cost)||0), 0);
     const label = `<div class="tl-when"><div class="tl-mark">${g.miles != null ? esc(fmtMiles(g.miles)) : esc(fmtDate(g.date))}</div><div class="tl-away">Done ${esc(fmtDate(g.date))}${total ? " · " + esc(fmtMoney(Math.round(total*100)/100)) : ""}</div></div>`;
-    for (let i = 0; i < g.items.length; i += 3) {
+    for (let i = 0; i < g.items.length; i += TL_ROWS()) {
       nodes.push(`<li class="tl-node done ${i ? "cont" : "done-start"}"><span class="tl-dot" aria-hidden="true">${check}</span>
         ${label}
-        <div class="tl-items">${g.items.slice(i, i + 3).map(doneItem).join("")}</div></li>`);
+        <div class="tl-items">${g.items.slice(i, i + TL_ROWS()).map(doneItem).join("")}</div></li>`);
     }
   });
   if (nowRows.length) {
     const anyOver = nowRows.some(r => r.s.cls === "over");
     // Split into regular-width columns of up to 3 items so Due now lines up with the other milestones
     const label = `<div class="tl-when"><div class="tl-mark">Due now</div><div class="tl-away">${nowRows.length} ${nowRows.length === 1 ? "item" : "items"}</div></div>`;
-    for (let i = 0; i < nowRows.length; i += 3) {
+    for (let i = 0; i < nowRows.length; i += TL_ROWS()) {
       nodes.push(`<li class="tl-node now ${anyOver ? "over" : ""} ${i ? "cont" : ""}"${i ? '' : ""}><span class="tl-dot" aria-hidden="true"></span>
         ${label}
-        <div class="tl-items">${nowRows.slice(i, i + 3).map(item).join("")}</div></li>`);
+        <div class="tl-items">${nowRows.slice(i, i + TL_ROWS()).map(item).join("")}</div></li>`);
     }
   }
   Object.keys(byMiles).map(Number).sort((a,b) => a-b).forEach((m, i) => {
@@ -888,6 +892,8 @@ function renderOdometer(miles){
   paint(from);
   odoAnim = requestAnimationFrame(step);
 }
+
+TL_PHONE.addEventListener("change", () => { if (data) render(); });
 
 /* ===== Work tabs ===== */
 function setTodoTab(c, focus){
