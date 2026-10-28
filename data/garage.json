@@ -361,6 +361,16 @@
           "dueDate": null,
           "estCost": 3000,
           "notes": "Alternative to the paint and detail item. Satin black on the surfaces that face up or take hits, gloss black body in between:\n- Satin black roof (under the roof rack) and hood: $550-1,100\n- Satin black lower body (lower bumper, rockers, bottom of the doors): $600-1,200\n- Blacked-out trim (covers the chipping trim item): $200-500\n- Satin black mirror caps: $50-150\n- Correct and polish the remaining gloss paint, including the rear driver door: $500-1,000\nAbout $1,900-3,950 total, budgeting ~$3,000. The failing clear on the roof, hood and bumper must be sanded flush before wrapping. Cast vinyl lasts about 4-7 years. Shown as an option, so it isn't added to the planned total."
+        },
+        {
+          "id": "tdrivenoise",
+          "title": "Rhythmic \"eh eh eh\" noise right after accelerating",
+          "category": "Mechanical",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "Faint rhythmic \"eh eh eh eh\" sound for a moment while driving, right after accelerating (noticed 10/28/2026). Happens while driving, so most likely the driveline: the driveshaft center support bearing is a known weak spot on the 955 and gets noisy on load changes; also check wheel bearings and brake pad wear indicators. Rule out the new drive belt/tensioner from 10/28 (TJA warranty) by revving in Park. Have TJA road-test it and inspect the driveshaft center bearing."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
