@@ -189,7 +189,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Decided to replace both headlight assemblies. The passenger headlight has water inside the lens; replacing both keeps them matched in color and brightness. Confirm whether the car has halogen or bi-xenon headlights before ordering, since the assemblies differ."
+          "notes": "Decided to replace both headlight assemblies. The passenger headlight has water inside the lens; replacing both keeps them matched in color and brightness. Confirm whether the car has halogen or bi-xenon headlights before ordering, since the assemblies differ.",
+          "category": "Electrical"
         },
         {
           "id": "t3",
@@ -198,7 +199,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Front dome lights and rear passenger overhead lights are both out. Check the interior lighting fuse first, then bulbs and door switches. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues."
+          "notes": "Front dome lights and rear passenger overhead lights are both out. Check the interior lighting fuse first, then bulbs and door switches. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues.",
+          "category": "Electrical"
         },
         {
           "id": "t4",
@@ -207,7 +209,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": 15,
-          "notes": "Rear panel on the passenger seat back is separating. It's held on with double-sided adhesive strips. Fix: remove old adhesive, clean both surfaces with isopropyl alcohol, re-stick with automotive double-sided tape (e.g. 3M VHB or 3M auto attachment tape), press firmly and let it cure."
+          "notes": "Rear panel on the passenger seat back is separating. It's held on with double-sided adhesive strips. Fix: remove old adhesive, clean both surfaces with isopropyl alcohol, re-stick with automotive double-sided tape (e.g. 3M VHB or 3M auto attachment tape), press firmly and let it cure.",
+          "category": "Bodywork"
         },
         {
           "id": "tvkg8v9",
@@ -216,7 +219,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Mechanic who worked on the car heard an exhaust leak; louder than normal but no running problems noticed. Have the source pinpointed (manifold gasket, flex pipe or a joint/clamp). Listen for ticking on cold start and watch for exhaust smell in the cabin."
+          "notes": "Mechanic who worked on the car heard an exhaust leak; louder than normal but no running problems noticed. Have the source pinpointed (manifold gasket, flex pipe or a joint/clamp). Listen for ticking on cold start and watch for exhaust smell in the cabin.",
+          "category": "Mechanical"
         },
         {
           "id": "tpaint26",
@@ -225,7 +229,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": 2200,
-          "notes": "Clear coat failing on the roof and bumper, so those panels need a sand, paint and clear at a body shop; polishing won't fix them. Then a one-step polish and paint sealant on the whole car. Budget about $1,400 to $3,000 all in: bumper $400-800, roof $700-1,500, one-step polish $200-400, sealant $100-250. Paint first, then polish and blend. Wait about 30 days for new paint to cure before sealing it. Paint quotes: Quality Automall (Rutherford), Jersey Auto Body (Passaic), Dynamic Collision (East Rutherford). Polish: JD Auto Detailing (Clifton) or Get Right Mobile Detailing. Ask each body shop if they blend into adjacent panels and whether the roof can be spot-repaired."
+          "notes": "Clear coat failing on the roof and bumper, so those panels need a sand, paint and clear at a body shop; polishing won't fix them. Then a one-step polish and paint sealant on the whole car. Budget about $1,400 to $3,000 all in: bumper $400-800, roof $700-1,500, one-step polish $200-400, sealant $100-250. Paint first, then polish and blend. Wait about 30 days for new paint to cure before sealing it. Paint quotes: Quality Automall (Rutherford), Jersey Auto Body (Passaic), Dynamic Collision (East Rutherford). Polish: JD Auto Detailing (Clifton) or Get Right Mobile Detailing. Ask each body shop if they blend into adjacent panels and whether the roof can be spot-repaired.",
+          "category": "Bodywork"
         },
         {
           "id": "tja-wipers",
@@ -234,7 +239,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": 40,
-          "notes": "Safety item: front wipers streaking and worn out. Easy DIY. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "notes": "Safety item: front wipers streaking and worn out. Easy DIY. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208).",
+          "category": "Mechanical"
         },
         {
           "id": "tja-hoses",
@@ -243,7 +249,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Hoses look original. Worth replacing together with the thermostat housing to save on labor and coolant. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "notes": "Hoses look original. Worth replacing together with the thermostat housing to save on labor and coolant. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208).",
+          "category": "Mechanical"
         },
         {
           "id": "tja-plugs",
@@ -252,7 +259,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Spark plugs worn or fouled. Also on the factory schedule; log it as Spark plugs when done to reset the countdown. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "notes": "Spark plugs worn or fouled. Also on the factory schedule; log it as Spark plugs when done to reset the countdown. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208).",
+          "category": "Mechanical"
         },
         {
           "id": "tja-controlarms",
@@ -261,7 +269,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": 1884.6,
-          "notes": "Replace the control arms and get an alignment afterward. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $1,884.60 incl. tax. 2 control arms $1,148 ($574 each), lower bushings R&R 2.5 hr $442.50, four-wheel alignment $177. Shop quoted OEM parts."
+          "notes": "Replace the control arms and get an alignment afterward. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). TJA Auto Care estimate 10/6/2026 (order 11622, valid 30 days): $1,884.60 incl. tax. 2 control arms $1,148 ($574 each), lower bushings R&R 2.5 hr $442.50, four-wheel alignment $177. Shop quoted OEM parts.",
+          "category": "Mechanical"
         },
         {
           "id": "tja-struts",
@@ -270,7 +279,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208)."
+          "notes": "Technician flagged them for review, not replacement yet. Ask how they look and ride; plan for them at some point. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208).",
+          "category": "Mechanical"
         },
         {
           "id": "t030q58",
@@ -279,7 +289,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues."
+          "notes": "Camera was installed with the aftermarket Android head unit. Check: head unit camera settings (reverse trigger enabled), reverse trigger wire to the reverse light circuit, power to the camera, video cable connection at the back of the head unit, and the camera itself. Recommended to have Zippo's Car Stereo (Lyndhurst) diagnose this along with the other aftermarket electrical issues.",
+          "category": "Electrical"
         },
         {
           "id": "t3mchft",
@@ -288,7 +299,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "TJA mechanic (10/28/2026) said the loud engine sound is mostly from the catalytic converter. It's a costly replacement but not a failure issue, so it can wait. He also noted these engines are just loud to begin with. Fuel use still worth tracking over a few fill-ups, and the overdue spark plugs and air filter may help. Get a quote before deciding."
+          "notes": "TJA mechanic (10/28/2026) said the loud engine sound is mostly from the catalytic converter. It's a costly replacement but not a failure issue, so it can wait. He also noted these engines are just loud to begin with. Fuel use still worth tracking over a few fill-ups, and the overdue spark plugs and air filter may help. Get a quote before deciding.",
+          "category": "Mechanical"
         },
         {
           "id": "tzippos",
@@ -297,7 +309,8 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "TJA recommended (10/28/2026) taking the car to Zippo's Car Stereo in Lyndhurst to look at the radio and electrical issues, since they likely trace back to the aftermarket head unit and backup camera install. Have them check: backup camera not working, interior dome and rear overhead lights out, and the head unit wiring/fuses."
+          "notes": "TJA recommended (10/28/2026) taking the car to Zippo's Car Stereo in Lyndhurst to look at the radio and electrical issues, since they likely trace back to the aftermarket head unit and backup camera install. Have them check: backup camera not working, interior dome and rear overhead lights out, and the head unit wiring/fuses.",
+          "category": "Electrical"
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",

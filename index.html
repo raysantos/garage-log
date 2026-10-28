@@ -191,6 +191,10 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .list .actions{grid-column:1/-1;gap:6px;margin-top:6px}
 /* Work cards */
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.cards .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.cards .cat-head:first-child{margin-top:0}
+.cards .cat-head h3{margin:0;font-family:var(--font-head);font-weight:600;font-size:1rem}
+.cards .cat-head span{font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .cards > li.empty{padding:18px 0;color:var(--muted)}
 .wcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden}
 .wcard summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;align-items:center;padding:14px 16px}
@@ -384,6 +388,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
 <dialog id="todoDlg"><form method="dialog" id="todoForm">
   <h3 id="todoDlgTitle">Add work item</h3>
   <div class="field"><label for="tTitle">What needs doing</label><input id="tTitle" required></div>
+  <div class="field"><label for="tCategory">Type of work</label><select id="tCategory"><option>Mechanical</option><option>Electrical</option><option>Bodywork</option></select></div>
   <div class="row">
     <div class="field"><label for="tPriority">Priority</label><select id="tPriority"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
     <div class="field"><label for="tCost">Estimated cost ($)</label><input id="tCost" type="number" min="0" step="0.01"></div>
@@ -484,6 +489,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid = () => Math.random().toString(36).slice(2,9);
 const fmtMiles = n => (n == null || n === "") ? "—" : Number(n).toLocaleString() + " mi";
+const TODO_CATS = ["Mechanical", "Electrical", "Bodywork"];
 const fmtMoney = n => { if (n == null || n === "") return ""; const x = Number(n), f = Number.isInteger(x) ? 0 : 2; return "$" + x.toLocaleString(undefined,{minimumFractionDigits:f,maximumFractionDigits:f}); };
 const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}) : "";
 const today = () => new Date().toISOString().slice(0,10);
@@ -703,7 +709,7 @@ function render(){
   const prio = { High:0, Medium:1, Low:2 };
   const todos = [...v.todo].sort((a,b) => (prio[a.priority]??1)-(prio[b.priority]??1));
   const openIds = new Set([...document.querySelectorAll("#todoList details[open]")].map(d => d.dataset.id));
-  $("#todoList").innerHTML = todos.length ? todos.map(t => `
+  const card = t => `
     <li><details class="wcard ${esc(t.priority)}" data-id="${esc(t.id)}" ${openIds.has(t.id) ? "open" : ""}>
       <summary>
         <span class="w-title">${esc(t.title)}<span class="sr-only"> (${esc(t.priority)} priority)</span></span>
@@ -719,7 +725,13 @@ function render(){
           <button class="btn small" data-act="del-todo" data-id="${esc(t.id)}">Remove</button>
         </div>
       </div>
-    </details></li>`).join("") : `<li class="empty">Nothing on the list.</li>`;
+    </details></li>`;
+  // Grouped by kind of work, each with its count and estimated total
+  const groups = [...TODO_CATS, "Other"].map(c => ({ c, items: todos.filter(t => (TODO_CATS.includes(t.category) ? t.category : "Other") === c) })).filter(g => g.items.length);
+  $("#todoList").innerHTML = todos.length ? groups.map(g => {
+    const est = g.items.reduce((s,t) => s + (Number(t.estCost)||0), 0);
+    return `<li class="cat-head"><h3>${esc(g.c)}</h3><span>${g.items.length} ${g.items.length === 1 ? "item" : "items"}${est ? " · " + esc(fmtMoney(est)) + " est." : ""}</span></li>` + g.items.map(card).join("");
+  }).join("") : `<li class="empty">Nothing on the list.</li>`;
 
   renderLog();
   renderTires();
@@ -921,11 +933,11 @@ function todoDialog(item){
   const v = V();
   $("#todoDlgTitle").textContent = item ? "Edit work item" : "Add work item";
   const t = item || { priority:"Medium" };
-  $("#tTitle").value = t.title || ""; $("#tPriority").value = t.priority || "Medium"; $("#tCost").value = t.estCost ?? "";
+  $("#tTitle").value = t.title || ""; $("#tCategory").value = t.category || "Mechanical"; $("#tPriority").value = t.priority || "Medium"; $("#tCost").value = t.estCost ?? "";
   $("#tDueMiles").value = t.dueMiles ?? ""; $("#tDueDate").value = t.dueDate || ""; $("#tNotes").value = t.notes || "";
   openDlg($("#todoDlg"), async () => {
     const rec = item || { id: uid() };
-    Object.assign(rec, { title:$("#tTitle").value.trim(), priority:$("#tPriority").value, estCost:numOrNull($("#tCost").value),
+    Object.assign(rec, { title:$("#tTitle").value.trim(), category:$("#tCategory").value, priority:$("#tPriority").value, estCost:numOrNull($("#tCost").value),
       dueMiles:numOrNull($("#tDueMiles").value), dueDate:$("#tDueDate").value || null, notes:$("#tNotes").value.trim() });
     if (!item) v.todo.push(rec);
     render(); await save(`${item ? "Edit" : "Add"} work item: ${rec.title}`);
