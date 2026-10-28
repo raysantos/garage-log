@@ -115,8 +115,10 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 /* Service timeline: horizontal, runs edge to edge of the window and scrolls */
 html,body{overflow-x:clip}
 .timeline-wrap{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
-.timeline{--edge:max(16px,calc((100vw - 1088px) / 2));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.timeline{--edge:max(16px,calc((100vw - 1088px) / 2));--fade:max(32px,var(--edge));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .timeline::-webkit-scrollbar{display:none}
+/* Soft fade where cards run past the page margins */
+.timeline{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--fade),#000 calc(100% - var(--fade)),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 var(--fade),#000 calc(100% - var(--fade)),transparent 100%)}
 @media (pointer:fine){.timeline{cursor:grab}}
 .timeline.dragging{cursor:grabbing;scroll-snap-type:none;user-select:none}
 .timeline.dragging *{pointer-events:none}
