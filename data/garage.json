@@ -188,8 +188,8 @@
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Decided to replace both headlight assemblies. The passenger headlight has water inside the lens; replacing both keeps them matched in color and brightness. Confirm whether the car has halogen or bi-xenon headlights before ordering, since the assemblies differ. Parts picked: Valeo 46660 (driver/left) and Valeo 46661 (passenger/right) xenon assemblies; bulbs not included.",
+          "estCost": 783.9,
+          "notes": "Replacing both halogen headlight assemblies as a straight swap: Valeo 46658 (driver/left) and Valeo 46659 (passenger/right), $391.95 each, bulbs included, $783.90 total with free shipping. The passenger side had water inside the lens. DIY: open the hood, use the release tool in the access hole at the top of each headlight to push it forward, unplug, slide the new one in and tighten. Aim the lights afterward.",
           "category": "Electrical"
         },
         {
