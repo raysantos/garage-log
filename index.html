@@ -692,10 +692,10 @@ function render(){
       <div class="tl-items">${byDate[d].map(item).join("")}</div></li>`);
   });
   $("#dueTags").innerHTML = nodes.length ? nodes.join("") : `<li class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</li>`;
-  // Start the scroll at the last completed point, so what's done and what's next are both in view
+  // Open on the present: Due now (or the next milestone) at the left edge, history off to the left
   requestAnimationFrame(() => {
-    const tl = $("#dueTags"), starts = tl.querySelectorAll(".tl-node.done-start");
-    if (starts.length > 1) tl.scrollLeft = starts[starts.length - 1].offsetLeft - tl.firstElementChild.offsetLeft;
+    const tl = $("#dueTags"), cur = tl.querySelector(".tl-node.now:not(.cont)") || tl.querySelector(".tl-node:not(.done)");
+    if (cur && tl.firstElementChild) tl.scrollLeft = cur.offsetLeft - tl.firstElementChild.offsetLeft;
     updateTlArrows();
   });
 
