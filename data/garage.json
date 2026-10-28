@@ -184,12 +184,12 @@
       "todo": [
         {
           "id": "t2",
-          "title": "Passenger headlight: water inside the lens",
+          "title": "Replace both headlights",
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Moisture inside the passenger headlight housing. Check the housing seal and rear cap, dry it out and reseal. If it keeps coming back, the housing may need replacing."
+          "notes": "Decided to replace both headlight assemblies. The passenger headlight has water inside the lens; replacing both keeps them matched in color and brightness. Confirm whether the car has halogen or bi-xenon headlights before ordering, since the assemblies differ."
         },
         {
           "id": "t3",
@@ -291,7 +291,7 @@
           "notes": "People say the engine sounds loud and it uses gas quickly. Pre-purchase check found no exhaust leak, but a mechanic who worked on it heard one. Next steps: track MPG over a few fill-ups, scan for codes and fuel trims with an OBD-II reader, and do the overdue spark plugs and air filter. Have a shop listen on a cold start for exhaust leak or timing chain noise."
         }
       ],
-      "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. With no service history logged, items show as due once the car has passed their mileage or age. Log a service to start each countdown.",
+      "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
       "tires": {
         "FL": {},
         "FR": {},

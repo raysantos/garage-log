@@ -122,6 +122,9 @@ html,body{overflow-x:clip}
 .tl-node.now .tl-dot{background:var(--due);border-color:var(--due)}
 .tl-node.now.over .tl-dot{background:var(--over);border-color:var(--over)}
 .tl-node.next .tl-dot{border-color:var(--ink);border-width:6px}
+.tl-node.done .tl-dot{background:var(--ok);border-color:var(--ok);display:grid;place-items:center;color:var(--paper)}
+.tl-node.done .tl-mark{color:var(--ok)}
+.tl-node.done .tl-item{background:transparent;border:1px solid var(--line)}
 .tl-when{margin:12px 0 10px}
 .tl-mark{font-family:var(--font-head);font-weight:600;font-size:1.375rem;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tl-node.now .tl-mark{color:var(--due)}
@@ -639,6 +642,19 @@ function render(){
   });
   const item = r => `<div class="tl-item" title="${esc(r.s.meta)}"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.short || r.s.meta)}</div></div>`;
   const nodes = [];
+  // Completed service points: the latest logged entry for each schedule item, grouped by visit
+  const doneGroups = {};
+  v.intervals.forEach(it => {
+    const last = v.log.filter(e => e.intervalId === it.id && e.date).sort((a,b) => b.date.localeCompare(a.date) || (b.miles||0)-(a.miles||0))[0];
+    if (!last) return;
+    const key = last.date + "|" + (last.miles ?? "");
+    (doneGroups[key] ||= { date:last.date, miles:last.miles, items:[] }).items.push({ it, e:last });
+  });
+  Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date)).forEach(g => {
+    nodes.push(`<li class="tl-node done"><span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="tl-when"><div class="tl-mark">${g.miles != null ? esc(fmtMiles(g.miles)) : "Done"}</div><div class="tl-away">Done ${esc(fmtDate(g.date))}</div></div>
+      <div class="tl-items">${g.items.map(({it,e}) => `<div class="tl-item" title="${esc(e.title)}"><div class="name">${esc(it.name)}</div><div class="meta">${esc(e.by || "Completed")}</div></div>`).join("")}</div></li>`);
+  });
   if (nowRows.length) {
     const anyOver = nowRows.some(r => r.s.cls === "over");
     nodes.push(`<li class="tl-node now ${anyOver ? "over" : ""}"><span class="tl-dot" aria-hidden="true"></span>
@@ -657,6 +673,11 @@ function render(){
       <div class="tl-items">${byDate[d].map(item).join("")}</div></li>`);
   });
   $("#dueTags").innerHTML = nodes.length ? nodes.join("") : `<li class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</li>`;
+  // Start the scroll at the last completed point, so what's done and what's next are both in view
+  requestAnimationFrame(() => {
+    const tl = $("#dueTags"), done = tl.querySelectorAll(".tl-node.done");
+    if (done.length > 1) tl.scrollLeft = done[done.length - 1].offsetLeft - tl.firstElementChild.offsetLeft;
+  });
 
   // Work needed
   const prio = { High:0, Medium:1, Low:2 };
