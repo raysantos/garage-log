@@ -53,7 +53,10 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter",system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 80px}
+:root{--gutter:16px}
+@media (max-width:1152px){:root{--gutter:28px}}
+@media (max-width:640px){:root{--gutter:22px}}
+.wrap{max-width:1120px;margin:0 auto;padding:28px var(--gutter) 80px}
 
 /* Header */
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:56px}
@@ -116,7 +119,7 @@ h2{margin:0;font-family:var(--font-head);font-weight:600;font-size:1.5rem;line-h
 /* Service timeline: horizontal, runs edge to edge of the window and scrolls */
 html,body{overflow-x:clip}
 .timeline-wrap{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
-.timeline{--edge:max(16px,calc((100vw - 1088px) / 2));--fade:max(32px,var(--edge));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.timeline{--edge:max(var(--gutter),calc((100vw - 1120px) / 2 + var(--gutter)));--fade:max(32px,var(--edge));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .timeline::-webkit-scrollbar{display:none}
 /* Soft fade where cards run past the page margins */
 .timeline{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--fade),#000 calc(100% - var(--fade)),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 var(--fade),#000 calc(100% - var(--fade)),transparent 100%)}
@@ -146,7 +149,7 @@ html,body{overflow-x:clip}
 .tl-node.cont .tl-dot{visibility:hidden}
 .tl-node.cont .tl-when{visibility:hidden}
 /* Phones: one full-width column at a time, swipe to the next */
-@media (max-width:640px){.timeline{--fade:16px}.tl-node{flex-basis:calc(100vw - 32px)}}
+@media (max-width:640px){.timeline{--fade:var(--gutter)}.tl-node{flex-basis:calc(100vw - 2 * var(--gutter))}}
 .tl-nav{display:flex;gap:6px;align-items:center}
 .tl-arrow{display:inline-grid;place-items:center;width:36px;height:36px;padding:0;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
 .tl-arrow:hover:not(:disabled){background:var(--card)}
