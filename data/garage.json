@@ -350,6 +350,17 @@
           "dueDate": null,
           "estCost": null,
           "notes": "Rear driver door looks like it was repainted before: the color is close and the surface is smooth, like it has some clear coat, but the gloss doesn't match the rest of the car. Likely a different clear or one that was never cut and polished, so a machine polish may bring it close; if not, it needs a fresh clear blended into the panel. Ask the body shops and include it in the paint quotes. Priced in the paint and detail item so it isn't counted twice."
+        },
+        {
+          "id": "twrap",
+          "option": "tpaint26",
+          "title": "Overland two-tone wrap instead of full repaint",
+          "category": "Bodywork",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": 3000,
+          "notes": "Alternative to the paint and detail item. Satin black on the surfaces that face up or take hits, gloss black body in between:\n- Satin black roof (under the roof rack) and hood: $550-1,100\n- Satin black lower body (lower bumper, rockers, bottom of the doors): $600-1,200\n- Blacked-out trim (covers the chipping trim item): $200-500\n- Satin black mirror caps: $50-150\n- Correct and polish the remaining gloss paint, including the rear driver door: $500-1,000\nAbout $1,900-3,950 total, budgeting ~$3,000. The failing clear on the roof, hood and bumper must be sanded flush before wrapping. Cast vinyl lasts about 4-7 years. Shown as an option, so it isn't added to the planned total."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
