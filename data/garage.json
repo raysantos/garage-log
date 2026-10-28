@@ -364,13 +364,13 @@
         },
         {
           "id": "tdrivenoise",
-          "title": "Rhythmic \"eh eh eh\" noise right after accelerating",
+          "title": "Rhythmic \"eh eh eh\" noise when lifting off the gas",
           "category": "Mechanical",
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Faint rhythmic \"eh eh eh eh\" sound for a moment while driving, right after accelerating (noticed 10/28/2026). Happens while driving, so most likely the driveline: the driveshaft center support bearing is a known weak spot on the 955 and gets noisy on load changes; also check wheel bearings and brake pad wear indicators. Rule out the new drive belt/tensioner from 10/28 (TJA warranty) by revving in Park. Have TJA road-test it and inspect the driveshaft center bearing."
+          "notes": "Faint rhythmic \"eh eh eh eh\" sound for a moment while driving, right after lifting off the accelerator (on deceleration) (noticed 10/28/2026). Happens while driving, so most likely the driveline: the driveshaft center support bearing is a known weak spot on the 955 and gets noisy on load changes; also check wheel bearings and brake pad wear indicators. Rule out the new drive belt/tensioner from 10/28 (TJA warranty) by revving in Park. Have TJA road-test it and inspect the driveshaft center bearing. Lift-off timing also fits the exhaust leak puffing on deceleration, so have that checked in the same visit."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
