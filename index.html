@@ -81,8 +81,11 @@ body.editing .edit-only.block{display:block}
 @media (max-width:640px){.hero-id{flex-direction:column;align-items:flex-start;gap:16px}.car-img{width:min(100%,320px)}}
 .odo{text-align:right}
 .odo-digits{display:inline-flex;gap:2px;font-variant-numeric:tabular-nums}
-.odo-digits span{display:inline-block;min-width:1.1ch;padding:6px 4px;border:1px solid var(--line);background:var(--card);font-weight:300;font-size:clamp(1.6rem,4.4vw,2.6rem);line-height:1;text-align:center;border-radius:var(--radius-sm)}
-.odo-digits span.lead{color:var(--muted)}
+.odo-digits > span{display:inline-block;min-width:1.1ch;padding:6px 4px;border:1px solid var(--line);background:var(--card);font-weight:300;font-size:clamp(1.6rem,4.4vw,2.6rem);line-height:1;text-align:center;border-radius:var(--radius-sm)}
+.odo-digits > span.lead{color:var(--muted)}
+.odo-digits .win{display:block;height:1em;overflow:hidden}
+.odo-digits .strip{display:block;will-change:transform}
+.odo-digits .strip i{display:block;height:1em;font-style:normal}
 .odo-note{font-size:.875rem;color:var(--muted);margin-top:8px}
 @media (max-width:640px){.hero{grid-template-columns:1fr}.odo{text-align:left}}
 
@@ -629,9 +632,7 @@ function render(){
   else { img.hidden = true; img.removeAttribute("src"); }
 
   // Odometer
-  const digits = v.mileage != null ? String(Math.round(v.mileage)).padStart(6,"0") : "------";
-  const firstReal = digits.search(/[1-9]/);
-  $("#odo").innerHTML = [...digits].map((d,i) => `<span class="${v.mileage != null && i < firstReal ? "lead" : ""}">${d}</span>`).join("");
+  renderOdometer(v.mileage);
   $("#odoNote").textContent = v.mileage != null ? `miles${v.mileageDate ? ", as of " + fmtDate(v.mileageDate) : ""}` : "Mileage not set";
 
   $("#schedIntro").textContent = v.scheduleNote || "Each item is due at whichever comes first, its miles or its time since you last logged it.";
@@ -649,18 +650,25 @@ function render(){
   });
   const item = r => `<div class="tl-item" title="${esc(r.s.meta)}"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.short || r.s.meta)}</div></div>`;
   const nodes = [];
-  // Completed service points: the latest logged entry for each schedule item, grouped by visit
+  // Service history on the timeline: every logged entry, grouped by visit (date + mileage), oldest first
   const doneGroups = {};
-  v.intervals.forEach(it => {
-    const last = v.log.filter(e => e.intervalId === it.id && e.date).sort((a,b) => b.date.localeCompare(a.date) || (b.miles||0)-(a.miles||0))[0];
-    if (!last) return;
-    const key = last.date + "|" + (last.miles ?? "");
-    (doneGroups[key] ||= { date:last.date, miles:last.miles, items:[] }).items.push({ it, e:last });
+  v.log.filter(e => e.date).forEach(e => {
+    const key = e.date + "|" + (e.miles ?? "");
+    (doneGroups[key] ||= { date:e.date, miles:e.miles, items:[] }).items.push(e);
   });
-  Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date)).forEach(g => {
-    nodes.push(`<li class="tl-node done"><span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-      <div class="tl-when"><div class="tl-mark">${g.miles != null ? esc(fmtMiles(g.miles)) : "Done"}</div><div class="tl-away">Done ${esc(fmtDate(g.date))}</div></div>
-      <div class="tl-items">${g.items.map(({it,e}) => `<div class="tl-item" title="${esc(e.title)}"><div class="name">${esc(it.name)}</div><div class="meta">${esc(e.by || "Completed")}</div></div>`).join("")}</div></li>`);
+  const check = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
+  const doneItem = e => {
+    const it = e.intervalId && v.intervals.find(i => i.id === e.intervalId);
+    return `<div class="tl-item" title="${esc([e.title, e.by].filter(Boolean).join(", "))}"><div class="name">${esc(e.title)}</div><div class="meta">${esc([it ? it.name : "", fmtMoney(e.cost)].filter(Boolean).join(" · ") || e.by || "Completed")}</div></div>`;
+  };
+  Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date) || (a.miles||0)-(b.miles||0)).forEach(g => {
+    const total = g.items.reduce((s,e) => s + (Number(e.cost)||0), 0);
+    const label = `<div class="tl-when"><div class="tl-mark">${g.miles != null ? esc(fmtMiles(g.miles)) : esc(fmtDate(g.date))}</div><div class="tl-away">Done ${esc(fmtDate(g.date))}${total ? " · " + esc(fmtMoney(Math.round(total*100)/100)) : ""}</div></div>`;
+    for (let i = 0; i < g.items.length; i += 3) {
+      nodes.push(`<li class="tl-node done ${i ? "cont" : "done-start"}"><span class="tl-dot" aria-hidden="true">${check}</span>
+        ${label}
+        <div class="tl-items">${g.items.slice(i, i + 3).map(doneItem).join("")}</div></li>`);
+    }
   });
   if (nowRows.length) {
     const anyOver = nowRows.some(r => r.s.cls === "over");
@@ -686,8 +694,8 @@ function render(){
   $("#dueTags").innerHTML = nodes.length ? nodes.join("") : `<li class="empty">No schedule set.${editing ? " Use Edit schedule to add one." : ""}</li>`;
   // Start the scroll at the last completed point, so what's done and what's next are both in view
   requestAnimationFrame(() => {
-    const tl = $("#dueTags"), done = tl.querySelectorAll(".tl-node.done");
-    if (done.length > 1) tl.scrollLeft = done[done.length - 1].offsetLeft - tl.firstElementChild.offsetLeft;
+    const tl = $("#dueTags"), starts = tl.querySelectorAll(".tl-node.done-start");
+    if (starts.length > 1) tl.scrollLeft = starts[starts.length - 1].offsetLeft - tl.firstElementChild.offsetLeft;
     updateTlArrows();
   });
 
@@ -766,6 +774,42 @@ function renderSpend(){
     <div class="stat"><div class="k">This year</div><div class="v">${m(thisYear)}</div><div class="s">${yr}</div></div>
     <div class="stat"><div class="k">Shop visits</div><div class="v">${visits}</div><div class="s">${visits ? m(total / visits) + " average" : "—"}</div></div>
     <div class="stat"><div class="k">Planned work</div><div class="v">${m(planned)}</div><div class="s">${priced.length} estimated${unpriced ? `, ${unpriced} not priced` : ""}</div></div>`;
+}
+
+/* ===== Odometer: mechanical wheels that roll up to the mileage =====
+   The right wheel turns continuously; each wheel to its left only rolls while the
+   wheels to its right pass 9 -> 0, like a real odometer. */
+let odoShown = null, odoAnim = 0;
+function renderOdometer(miles){
+  const el = $("#odo");
+  if (miles == null) { el.innerHTML = [..."------"].map(d => `<span>${d}</span>`).join(""); odoShown = null; return; }
+  const target = Math.round(miles), n = Math.max(6, String(target).length);
+  el.setAttribute("aria-label", `Current mileage ${target.toLocaleString()} miles`);
+  if (el.children.length !== n || !el.querySelector(".strip")) {
+    el.dataset.n = n;
+    el.innerHTML = Array.from({length:n}, () => `<span aria-hidden="true"><span class="win"><span class="strip">${"01234567890".split("").map(d => `<i>${d}</i>`).join("")}</span></span></span>`).join("");
+  }
+  const wheels = [...el.children].map(w => w.querySelector(".strip")).reverse(); // ones wheel first
+  const leadCount = n - String(target).length;
+  [...el.children].forEach((w,i) => w.classList.toggle("lead", i < leadCount));
+  const paint = val => wheels.forEach((st, i) => {
+    const p = 10 ** i, d = Math.floor(val / p) % 10, r = val % p;
+    const pos = i === 0 ? val % 10 : d + Math.max(0, r - (p - 1));
+    st.style.transform = `translateY(${-pos}em)`;
+  });
+  const from = odoShown ?? 0;
+  odoShown = target;
+  cancelAnimationFrame(odoAnim);
+  if (from === target || matchMedia("(prefers-reduced-motion: reduce)").matches) { paint(target); return; }
+  const dur = from === 0 ? 2600 : 1200, t0 = performance.now();
+  const ease = t => 1 - Math.pow(1 - t, 4);
+  const step = now => {
+    const t = Math.min(1, (now - t0) / dur);
+    paint(from + (target - from) * ease(t));
+    if (t < 1) odoAnim = requestAnimationFrame(step);
+  };
+  paint(from);
+  odoAnim = requestAnimationFrame(step);
 }
 
 /* ===== Timeline arrows: step one column at a time ===== */

@@ -283,12 +283,12 @@
         },
         {
           "id": "t3mchft",
-          "title": "Engine sounds loud and fuel use seems high",
-          "priority": "Medium",
+          "title": "Loud engine: catalytic converter",
+          "priority": "Low",
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "People say the engine sounds loud and it uses gas quickly. Pre-purchase check found no exhaust leak, but a mechanic who worked on it heard one. Next steps: track MPG over a few fill-ups, scan for codes and fuel trims with an OBD-II reader, and do the overdue spark plugs and air filter. Have a shop listen on a cold start for exhaust leak or timing chain noise."
+          "notes": "TJA mechanic (10/28/2026) said the loud engine sound is mostly from the catalytic converter. It's a costly replacement but not a failure issue, so it can wait. Fuel use still worth tracking over a few fill-ups, and the overdue spark plugs and air filter may help. Get a quote before deciding."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
