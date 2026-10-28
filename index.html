@@ -240,6 +240,27 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 /* Specs */
 dl.specs{margin:0;border-top:1px solid var(--line)}
 
+/* Header icon button (same look as the theme toggle) */
+.icon-btn{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;transition:background-color .15s}
+.icon-btn:hover{background:var(--card)}
+.icon-btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.icon-btn .ms{font-size:22px}
+
+/* Side sheet: slides in from the right */
+dialog.sheet{margin:0 0 0 auto;width:min(420px,100vw);height:100dvh;max-height:none;max-width:none;border-radius:var(--radius-lg) 0 0 var(--radius-lg);padding:20px 16px 32px;overflow-y:auto;overscroll-behavior:contain}
+dialog.sheet[open]{animation:sheet-in .28s cubic-bezier(.2,.8,.2,1)}
+dialog.sheet.closing{animation:sheet-out .2s ease-in forwards}
+dialog.sheet[open]::backdrop{animation:fade-in .28s ease}
+dialog.sheet.closing::backdrop{animation:fade-out .2s ease forwards}
+@keyframes sheet-in{from{transform:translateX(100%)}to{transform:none}}
+@keyframes sheet-out{to{transform:translateX(100%)}}
+@keyframes fade-in{from{opacity:0}}
+@keyframes fade-out{to{opacity:0}}
+@media (prefers-reduced-motion:reduce){dialog.sheet[open],dialog.sheet.closing,dialog.sheet[open]::backdrop,dialog.sheet.closing::backdrop{animation:none}}
+@media (max-width:480px){dialog.sheet{border-radius:0}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.sheet-head h3{margin:0}
+
 /* Contacts */
 .contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .contact{background:var(--card);border-radius:var(--radius-lg);padding:16px}
@@ -284,6 +305,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="top-actions">
       <select class="vehicle-pick" id="vehiclePick" aria-label="Vehicle"></select>
       <button class="btn edit-only" id="addVehicleBtn">Add vehicle</button>
+      <button class="icon-btn" type="button" id="contactsBtn" aria-label="Contacts" title="Contacts" aria-haspopup="dialog"><span class="ms" aria-hidden="true">contacts</span></button>
       <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode"><span class="ms" aria-hidden="true">dark_mode</span></button>
       <button class="btn" id="editToggle">Edit</button>
     </div>
@@ -368,13 +390,18 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
         <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
         <dl class="specs" id="specList"></dl>
       </section>
-      <section>
-        <div class="sec-head"><h2>Contacts</h2></div>
-        <ul class="contacts" id="contactList"></ul>
-      </section>
     </div>
   </div>
 </div>
+
+<!-- Contacts side sheet -->
+<dialog class="sheet" id="contactsSheet" aria-labelledby="contactsTitle">
+  <div class="sheet-head">
+    <h3 id="contactsTitle">Contacts</h3>
+    <button class="icon-btn" type="button" id="contactsClose" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>
+  </div>
+  <ul class="contacts" id="contactList"></ul>
+</dialog>
 
 <!-- Dialogs -->
 <dialog id="unlockDlg"><form method="dialog" id="unlockForm">
@@ -842,6 +869,20 @@ function renderOdometer(miles){
 }
 
 /* ===== Contacts ===== */
+(() => {
+  const sheet = $("#contactsSheet");
+  const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const close = () => {
+    if (!sheet.open || sheet.classList.contains("closing")) return;
+    if (reduce()) { sheet.close(); return; }
+    sheet.classList.add("closing");
+    sheet.addEventListener("animationend", () => { sheet.classList.remove("closing"); sheet.close(); }, { once:true });
+  };
+  $("#contactsBtn").addEventListener("click", () => { renderContacts(); sheet.showModal(); });
+  $("#contactsClose").addEventListener("click", close);
+  sheet.addEventListener("cancel", e => { e.preventDefault(); close(); });                 // Esc
+  sheet.addEventListener("click", e => { if (e.target === sheet) { const r = sheet.getBoundingClientRect(); if (e.clientX < r.left) close(); } }); // backdrop
+})();
 function renderContacts(){
   const list = data?.contacts || [];
   const ic = d => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
