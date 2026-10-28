@@ -79,7 +79,11 @@ body.editing .edit-only[hidden]{display:none}
 /* Hero: model name + odometer */
 .hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:48px}
 .hero h1{margin:0;font-family:var(--font-head);font-weight:600;font-size:clamp(2.1rem,6vw,3.75rem);line-height:1;letter-spacing:-.02em}
-.hero .sub{color:var(--muted);margin-top:10px;font-size:1.125rem}
+.hero .sub{color:var(--muted);margin-top:10px;font-size:1.125rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 10px}
+.sub-link{padding:0;border:0;background:none;font:inherit;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;cursor:pointer}
+.sub-link:hover{text-decoration-thickness:2px}
+dialog.sheet.wide{width:min(640px,100vw)}
+.sheet-tools{display:flex;align-items:center;gap:8px}
 .hero-id{display:flex;align-items:center;gap:28px;min-width:0}
 .car-img{width:clamp(160px,24vw,300px);height:auto;flex:none;object-fit:contain}
 @media (max-width:640px){.hero-id{flex-direction:column;align-items:flex-start;gap:16px}.car-img{width:min(100%,320px)}}
@@ -385,7 +389,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
       <img id="vImg" class="car-img" alt="" hidden>
       <div>
         <h1 id="vTitle">—</h1>
-        <div class="sub" id="vSub"></div>
+        <div class="sub"><span id="vSub"></span><span class="sub-sep" aria-hidden="true">·</span><button type="button" class="sub-link" id="specsBtn" aria-haspopup="dialog">Full specs</button></div>
       </div>
     </div>
     <div class="odo">
@@ -412,8 +416,21 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div id="todoList" role="tabpanel"></div>
   </section>
 
+
   <section>
-    <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
+    <div class="sec-head"><h2>Service history</h2><button class="btn small primary edit-only" id="addLogBtn">Log service</button></div>
+    <div class="history-filter"><input type="search" id="logSearch" placeholder="Search history" aria-label="Search history"></div>
+    <ul class="list" id="logList"></ul>
+    <div class="totals" id="logTotals"></div>
+  </section>
+</div>
+
+<!-- Specs side sheet -->
+<dialog class="sheet wide" id="specsSheet" aria-labelledby="specsTitle">
+  <div class="sheet-head">
+    <h3 id="specsTitle">Specs</h3>
+    <div class="sheet-tools"><button class="btn small edit-only" id="addSpecBtn">Add spec</button><button class="icon-btn" type="button" id="specsClose" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button></div>
+  </div>
     <div class="tabs" id="specTabs" role="tablist" aria-label="Spec type"></div>
     <div id="tirePanel" role="tabpanel">
     <div class="tires">
@@ -444,15 +461,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <p class="tire-warn" id="tireWarn" hidden></p>
     </div>
     <dl class="specs" id="specList" role="tabpanel" hidden></dl>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>Service history</h2><button class="btn small primary edit-only" id="addLogBtn">Log service</button></div>
-    <div class="history-filter"><input type="search" id="logSearch" placeholder="Search history" aria-label="Search history"></div>
-    <ul class="list" id="logList"></ul>
-    <div class="totals" id="logTotals"></div>
-  </section>
-</div>
+</dialog>
 
 <!-- Contacts side sheet -->
 <dialog class="sheet" id="contactsSheet" aria-labelledby="contactsTitle">
@@ -1041,8 +1050,7 @@ $("#specTabs").addEventListener("keydown", e => {
 });
 
 /* ===== Contacts ===== */
-(() => {
-  const sheet = $("#contactsSheet");
+function setupSheet(sheet, openBtn, closeBtn, onOpen){
   const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const close = () => {
     if (!sheet.open || sheet.classList.contains("closing")) return;
@@ -1050,11 +1058,13 @@ $("#specTabs").addEventListener("keydown", e => {
     sheet.classList.add("closing");
     sheet.addEventListener("animationend", () => { sheet.classList.remove("closing"); sheet.close(); }, { once:true });
   };
-  $("#contactsBtn").addEventListener("click", () => { renderContacts(); sheet.showModal(); });
-  $("#contactsClose").addEventListener("click", close);
-  sheet.addEventListener("cancel", e => { e.preventDefault(); close(); });                 // Esc
+  openBtn.addEventListener("click", () => { onOpen?.(); sheet.showModal(); });
+  closeBtn.addEventListener("click", close);
+  sheet.addEventListener("cancel", e => { if (e.target === sheet) { e.preventDefault(); close(); } });   // Esc
   sheet.addEventListener("click", e => { if (e.target === sheet) { const r = sheet.getBoundingClientRect(); if (e.clientX < r.left) close(); } }); // backdrop
-})();
+}
+setupSheet($("#contactsSheet"), $("#contactsBtn"), $("#contactsClose"), () => renderContacts());
+setupSheet($("#specsSheet"), $("#specsBtn"), $("#specsClose"));
 function renderContacts(){
   const list = data?.contacts || [];
   const ic = d => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
