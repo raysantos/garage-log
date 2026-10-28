@@ -114,6 +114,9 @@ html,body{overflow-x:clip}
 .timeline-wrap{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
 .timeline{--edge:max(16px,calc((100vw - 1088px) / 2));list-style:none;margin:0;padding:0 var(--edge) 12px;scroll-padding-inline:var(--edge);display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .timeline::-webkit-scrollbar{display:none}
+@media (pointer:fine){.timeline{cursor:grab}}
+.timeline.dragging{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.timeline.dragging *{pointer-events:none}
 .tl-node{position:relative;flex:0 0 240px;padding-right:20px;scroll-snap-align:start}
 .tl-node::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:var(--line)}
 .tl-node:first-child::before{left:12px}
@@ -779,6 +782,40 @@ $("#tlPrev").addEventListener("click", () => stepTimeline(-1));
 $("#tlNext").addEventListener("click", () => stepTimeline(1));
 $("#dueTags").addEventListener("scroll", updateTlArrows, { passive:true });
 addEventListener("resize", updateTlArrows);
+
+/* Mouse drag to scroll (touch already swipes natively). Snap is paused mid-drag, then the
+   timeline settles on the nearest column, nudged in the direction of the flick. */
+(() => {
+  const tl = $("#dueTags");
+  let startX = 0, startLeft = 0, lastX = 0, lastT = 0, vel = 0, down = false, moved = false;
+  tl.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    down = true; moved = false; startX = lastX = e.clientX; startLeft = tl.scrollLeft; lastT = performance.now(); vel = 0;
+  });
+  addEventListener("pointermove", e => {
+    if (!down) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < 5) return;
+    if (!moved) { moved = true; tl.classList.add("dragging"); }
+    const now = performance.now();
+    vel = (e.clientX - lastX) / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
+    tl.scrollLeft = startLeft - dx;
+  });
+  addEventListener("pointerup", () => {
+    if (!down) return; down = false;
+    if (!moved) return;
+    const nodes = [...tl.querySelectorAll(".tl-node")], base = nodes[0]?.offsetLeft || 0;
+    const fling = -vel * 200;   // px of extra travel from the flick speed
+    const target = tl.scrollLeft + fling;
+    let best = 0;
+    nodes.forEach(n => { const x = n.offsetLeft - base; if (Math.abs(x - target) < Math.abs(best - target)) best = x; });
+    tl.classList.remove("dragging");
+    tl.scrollTo({ left: best, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+  // A drag shouldn't count as a click on a card
+  tl.addEventListener("click", e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  tl.addEventListener("dragstart", e => e.preventDefault());
+})();
 
 /* ===== Dialog helper ===== */
 function openDlg(dlg, onOk){
