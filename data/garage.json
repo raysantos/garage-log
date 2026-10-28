@@ -10,8 +10,8 @@
       "model": "Cayenne",
       "trim": "Base",
       "engine": "3.2L V6",
-      "mileage": 89323,
-      "mileageDate": "2026-10-06",
+      "mileage": 89714,
+      "mileageDate": "2026-10-28",
       "specs": [
         {
           "id": "s1",
@@ -127,47 +127,58 @@
       "log": [
         {
           "id": "l-thermo-1022",
-          "date": "2026-10-22",
-          "miles": null,
+          "date": "2026-10-28",
+          "miles": 89714,
           "title": "Thermostat housing and thermostat replaced",
           "intervalId": null,
-          "cost": 1652.77,
-          "by": "TJA Auto Group (Lyndhurst)",
-          "parts": "",
-          "notes": "Fixes the coolant leak found at the 10/6 inspection. Cost is the 10/6 estimate (RO 11622); update with the final invoice amount."
+          "cost": 1688.92,
+          "by": "TJA Auto Care (Lyndhurst)",
+          "parts": "Thermostat assembly 1601-711950 ($151.78), coolant pipe 955 106 050 00 ($33.90)",
+          "notes": "Fixes the coolant leak found at the 10/6 inspection. Labor 7.9 hr ($1,398.30), tax $104.94. Invoice labor line excludes bleeding the cooling system. Invoice 11656, work complete 10/28/2026 at 89,714 mi. Shop warranty: 24 months or 24,000 miles from 10/28/2026."
         },
         {
           "id": "l-belt-1022",
-          "date": "2026-10-22",
-          "miles": null,
+          "date": "2026-10-28",
+          "miles": 89714,
           "title": "Drive belt replaced",
           "intervalId": null,
           "cost": 416.16,
-          "by": "TJA Auto Group (Lyndhurst)",
-          "parts": "",
-          "notes": "Belt was glazed and noisy. Cost is the 10/6 estimate (RO 11622); update with the final invoice amount."
+          "by": "TJA Auto Care (Lyndhurst)",
+          "parts": "Serpentine belt 7DPK2074 ($231.00)",
+          "notes": "Belt was glazed and noisy. Labor 0.9 hr ($159.30), tax $25.86. Invoice 11656, work complete 10/28/2026 at 89,714 mi. Shop warranty: 24 months or 24,000 miles from 10/28/2026."
         },
         {
           "id": "l-trans-1022",
-          "date": "2026-10-22",
-          "miles": null,
+          "date": "2026-10-28",
+          "miles": 89714,
           "title": "Transmission service: pan gasket, filter and fluid",
           "intervalId": "atf",
           "cost": 786.15,
-          "by": "TJA Auto Group (Lyndhurst)",
-          "parts": "",
-          "notes": "Fixes the leaking transmission pan. Cost is the 10/6 estimate (RO 11622); update with the final invoice amount."
+          "by": "TJA Auto Care (Lyndhurst)",
+          "parts": "Trans oil filter kit 09D398435H ($125.00), ATF G055025A2M x6 ($276.00)",
+          "notes": "Fixes the leaking transmission pan. Labor 1.9 hr ($336.30), tax $48.85. Invoice 11656, work complete 10/28/2026 at 89,714 mi. Shop warranty: 24 months or 24,000 miles from 10/28/2026."
         },
         {
           "id": "l-oil-1022",
-          "date": "2026-10-22",
-          "miles": null,
+          "date": "2026-10-28",
+          "miles": 89714,
           "title": "Oil and filter change",
           "intervalId": "oil",
-          "cost": null,
-          "by": "TJA Auto Group (Lyndhurst)",
+          "cost": 143.43,
+          "by": "TJA Auto Care (Lyndhurst)",
+          "parts": "Hengst oil filter 021115562AH, Mobil 1 0W-40 (7.5 qt billed)",
+          "notes": "Service A: oil and filter, 27-point inspection, tire pressure, maintenance light reset, battery check. Labor 0.76 hr ($134.52), tax $8.91; parts not charged. Invoice 11656, work complete 10/28/2026 at 89,714 mi. Shop warranty: 24 months or 24,000 miles from 10/28/2026."
+        },
+        {
+          "id": "l-fees-1028",
+          "date": "2026-10-28",
+          "miles": 89714,
+          "title": "Shop supplies and environmental fee",
+          "intervalId": null,
+          "cost": 91.04,
+          "by": "TJA Auto Care (Lyndhurst)",
           "parts": "",
-          "notes": "Done with the thermostat, belt and transmission work. Add cost, oil type and mileage from the invoice."
+          "notes": "Environmental charge $42.69, shop supplies $42.69, tax $5.66. Invoice 11656 total $3,125.69."
         }
       ],
       "todo": [
