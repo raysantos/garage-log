@@ -278,6 +278,28 @@ dialog.sheet.closing::backdrop{animation:fade-out .2s ease forwards}
 /* Spec tables span the full section width; the tab bar already draws the top rule */
 #specList{border-top:0;margin-top:-12px}
 
+/* Timeline item detail card */
+.tl-item[role="button"]{cursor:pointer;transition:background-color .15s,border-color .15s}
+.tl-item[role="button"]:hover{background:color-mix(in srgb,var(--card) 80%,var(--ink) 8%)}
+.tl-node.done .tl-item[role="button"]:hover{border-color:color-mix(in srgb,var(--line) 50%,var(--ink) 40%)}
+.tl-item[role="button"]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.svc-dlg{width:min(460px,calc(100vw - 32px));border:1px solid var(--line)}
+.svc-dlg[open]{animation:svc-in .18s ease-out}
+@keyframes svc-in{from{opacity:0;transform:translateY(8px) scale(.98)}}
+@media (prefers-reduced-motion:reduce){.svc-dlg[open]{animation:none}}
+.svc-body{padding:22px 22px 20px}
+.svc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.svc-kicker{display:inline-flex;align-items:center;gap:6px;font-size:.8125rem;color:var(--muted);margin-bottom:6px}
+.svc-kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.svc-kicker.done::before{background:var(--ok)} .svc-kicker.due::before{background:var(--due)} .svc-kicker.over::before{background:var(--over)}
+.svc-body h3{margin:0;font-size:1.375rem;line-height:1.25}
+.svc-cost{font-family:var(--font-head);font-weight:600;font-size:1.375rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.svc-facts{margin:16px 0 0;border-top:1px solid var(--line)}
+.svc-facts div{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
+.svc-facts dt{color:var(--muted)} .svc-facts dd{margin:0}
+.svc-notes{font-size:.9375rem;color:var(--muted);margin:14px 0 0;white-space:pre-wrap}
+.svc-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
 /* Contacts */
 .contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .contact{background:var(--card);border-radius:var(--radius-lg);padding:16px}
@@ -421,6 +443,11 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <button class="icon-btn" type="button" id="contactsClose" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>
   </div>
   <ul class="contacts" id="contactList"></ul>
+</dialog>
+
+<!-- Service detail card -->
+<dialog id="svcDlg" class="svc-dlg" aria-labelledby="svcTitle">
+  <div class="svc-body" id="svcBody"></div>
 </dialog>
 
 <!-- Dialogs -->
@@ -726,7 +753,7 @@ function render(){
     else if (r.n.date) (byDate[r.n.date] ||= []).push(r);
     else (byDate["~"] ||= []).push(r);
   });
-  const item = r => `<div class="tl-item" title="${esc(r.s.meta)}"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.short || r.s.meta)}</div></div>`;
+  const item = r => `<div class="tl-item" role="button" tabindex="0" data-int="${esc(r.it.id)}" aria-haspopup="dialog"><div class="name">${esc(r.it.name)}</div><div class="meta">${esc(r.s.short || r.s.meta)}</div></div>`;
   const nodes = [];
   // Service history on the timeline: every logged entry, grouped by visit (date + mileage), oldest first
   const doneGroups = {};
@@ -737,7 +764,7 @@ function render(){
   const check = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
   const doneItem = e => {
     const it = e.intervalId && v.intervals.find(i => i.id === e.intervalId);
-    return `<div class="tl-item" title="${esc([e.title, e.by].filter(Boolean).join(", "))}"><div class="name">${esc(e.title)}</div><div class="meta">${esc([it ? it.name : "", fmtMoney(e.cost)].filter(Boolean).join(" · ") || e.by || "Completed")}</div></div>`;
+    return `<div class="tl-item" role="button" tabindex="0" data-log="${esc(e.id)}" aria-haspopup="dialog"><div class="name">${esc(e.title)}</div><div class="meta">${esc([it ? it.name : "", fmtMoney(e.cost)].filter(Boolean).join(" · ") || e.by || "Completed")}</div></div>`;
   };
   Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date) || (a.miles||0)-(b.miles||0)).forEach(g => {
     const total = g.items.reduce((s,e) => s + (Number(e.cost)||0), 0);
@@ -931,6 +958,40 @@ $("#pricesBtn").addEventListener("click", () => {
   syncPricesBtn(); if (data) render();
 });
 syncPricesBtn();
+
+/* ===== Timeline detail card: click or tap an item ===== */
+function openServiceCard(el){
+  const v = V(); if (!v) return;
+  const fact = (k, val) => val ? `<div><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>` : "";
+  let html;
+  if (el.dataset.log) {
+    const e = v.log.find(x => x.id === el.dataset.log); if (!e) return;
+    const it = e.intervalId && v.intervals.find(i => i.id === e.intervalId);
+    html = `<div class="svc-top"><div><div class="svc-kicker done">Completed</div><h3 id="svcTitle">${esc(e.title)}</h3></div>${e.cost != null ? `<div class="svc-cost">${esc(fmtMoney(e.cost))}</div>` : ""}</div>
+      <dl class="svc-facts">${fact("Date", e.date && fmtDate(e.date))}${fact("Mileage", e.miles != null && fmtMiles(e.miles))}${fact("Shop", e.by)}${fact("Schedule", it && it.name)}${fact("Parts", e.parts)}</dl>
+      ${e.notes ? `<p class="svc-notes">${esc(e.notes)}</p>` : ""}
+      <div class="svc-actions"><button class="btn small edit-only" data-act="edit-log" data-id="${esc(e.id)}" data-close>Edit</button><button class="btn small primary" data-close>Close</button></div>`;
+  } else {
+    const it = v.intervals.find(i => i.id === el.dataset.int); if (!it) return;
+    const st = intervalStatus(v, it), nd = nextDue(v, it);
+    const kick = st.cls === "over" ? "over" : st.cls === "due" ? "due" : "";
+    const next = [nd.miles != null ? fmtMiles(nd.miles) : "", nd.date ? fmtDate(nd.date) : ""].filter(Boolean).join(" or ");
+    html = `<div class="svc-top"><div><div class="svc-kicker ${kick}">${esc(st.status)}</div><h3 id="svcTitle">${esc(it.name)}</h3></div></div>
+      <dl class="svc-facts">${fact("Interval", scheduleText(it))}${fact("Next due", next)}</dl>
+      <p class="svc-notes">${esc(st.meta)}</p>
+      <div class="svc-actions"><button class="btn small primary" data-close>Close</button></div>`;
+  }
+  $("#svcBody").innerHTML = html;
+  $("#svcDlg").showModal();
+}
+$("#dueTags").addEventListener("click", e => { const it = e.target.closest(".tl-item[role=button]"); if (it) openServiceCard(it); });
+$("#dueTags").addEventListener("keydown", e => {
+  const it = e.target.closest(".tl-item[role=button]");
+  if (it && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openServiceCard(it); }
+});
+$("#svcDlg").addEventListener("click", e => {
+  if (e.target.closest("[data-close]") || e.target === $("#svcDlg")) $("#svcDlg").close();
+});
 
 /* ===== Spec tabs ===== */
 function setSpecTab(c, focus){
