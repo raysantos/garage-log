@@ -205,6 +205,9 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .tab .count{font-weight:400;font-size:.75rem;padding:1px 7px;border-radius:999px;background:var(--card);color:var(--muted)}
 .tab:first-child{padding-left:0}
 .tab:first-child[aria-selected="true"]::after{left:0}
+#todoList{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+@media (max-width:960px){#todoList{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){#todoList{grid-template-columns:1fr}}
 .tab-sum{font-size:.8125rem;color:var(--muted);margin:0 0 12px}
 .cards .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .cards .cat-head:first-child{margin-top:0}
@@ -382,6 +385,14 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   </section>
 
   <section>
+    <div class="sec-head"><h2>Work needed</h2><button class="btn small primary edit-only" id="addTodoBtn">Add item</button></div>
+    <div class="prio-key" aria-hidden="true"><span class="High">High</span><span class="Medium">Medium</span><span class="Low">Low</span></div>
+    <div class="tabs" id="todoTabs" role="tablist" aria-label="Type of work"></div>
+    <div class="tab-sum" id="todoSum"></div>
+    <ul class="cards" id="todoList" role="tabpanel"></ul>
+  </section>
+
+  <section>
     <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
     <div class="tabs" id="specTabs" role="tablist" aria-label="Spec type"></div>
     <div id="tirePanel" role="tabpanel">
@@ -415,25 +426,12 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <dl class="specs" id="specList" role="tabpanel" hidden></dl>
   </section>
 
-  <div class="grid">
-    <div>
-      <section>
-        <div class="sec-head"><h2>Service history</h2><button class="btn small primary edit-only" id="addLogBtn">Log service</button></div>
-        <div class="history-filter"><input type="search" id="logSearch" placeholder="Search history" aria-label="Search history"></div>
-        <ul class="list" id="logList"></ul>
-        <div class="totals" id="logTotals"></div>
-      </section>
-    </div>
-    <div>
-      <section>
-        <div class="sec-head"><h2>Work needed</h2><button class="btn small primary edit-only" id="addTodoBtn">Add item</button></div>
-        <div class="prio-key" aria-hidden="true"><span class="High">High</span><span class="Medium">Medium</span><span class="Low">Low</span></div>
-        <div class="tabs" id="todoTabs" role="tablist" aria-label="Type of work"></div>
-        <div class="tab-sum" id="todoSum"></div>
-        <ul class="cards" id="todoList" role="tabpanel"></ul>
-      </section>
-    </div>
-  </div>
+  <section>
+    <div class="sec-head"><h2>Service history</h2><button class="btn small primary edit-only" id="addLogBtn">Log service</button></div>
+    <div class="history-filter"><input type="search" id="logSearch" placeholder="Search history" aria-label="Search history"></div>
+    <ul class="list" id="logList"></ul>
+    <div class="totals" id="logTotals"></div>
+  </section>
 </div>
 
 <!-- Contacts side sheet -->
