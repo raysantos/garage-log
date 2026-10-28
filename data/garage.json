@@ -320,6 +320,16 @@
           "estCost": null,
           "notes": "TJA recommended (10/28/2026) taking the car to Zippo's Car Stereo (745 Washington Ave, Belleville) to look at the radio and electrical issues, since they likely trace back to the aftermarket head unit and backup camera install. Have them check: backup camera not working, interior dome and rear overhead lights out, and the head unit wiring/fuses.",
           "category": "Electrical"
+        },
+        {
+          "id": "tglasses",
+          "title": "Sunglasses holder button missing",
+          "category": "Bodywork",
+          "priority": "Low",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "The small push button on the overhead sunglasses holder is missing. Options: buy a replacement button or the whole holder (search the part number on the holder, or used ones from Cayenne parts sellers on eBay), or 3D print a replacement button."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
