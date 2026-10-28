@@ -205,9 +205,17 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .tab .count{font-weight:400;font-size:.75rem;padding:1px 7px;border-radius:999px;background:var(--card);color:var(--muted)}
 .tab:first-child{padding-left:0}
 .tab:first-child[aria-selected="true"]::after{left:0}
-#todoList{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
-@media (max-width:960px){#todoList{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){#todoList{grid-template-columns:1fr}}
+/* Work needed: one row group per priority, cards in an even 3-column grid */
+.prio-group + .prio-group{margin-top:24px}
+.prio-label{display:flex;align-items:center;gap:8px;font-size:.8125rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+.prio-label::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--muted)}
+.prio-label.High::before{background:var(--over)} .prio-label.Medium::before{background:var(--due)}
+.prio-label .n{font-weight:400;letter-spacing:0}
+.work-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:12px}
+.work-grid > li{display:grid}
+.work-grid .wcard{height:100%}
+@media (max-width:960px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.work-grid{grid-template-columns:1fr}}
 .tab-sum{font-size:.8125rem;color:var(--muted);margin:0 0 12px}
 .cards .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .cards .cat-head:first-child{margin-top:0}
@@ -386,10 +394,9 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
 
   <section>
     <div class="sec-head"><h2>Work needed</h2><button class="btn small primary edit-only" id="addTodoBtn">Add item</button></div>
-    <div class="prio-key" aria-hidden="true"><span class="High">High</span><span class="Medium">Medium</span><span class="Low">Low</span></div>
     <div class="tabs" id="todoTabs" role="tablist" aria-label="Type of work"></div>
     <div class="tab-sum" id="todoSum"></div>
-    <ul class="cards" id="todoList" role="tabpanel"></ul>
+    <div id="todoList" role="tabpanel"></div>
   </section>
 
   <section>
@@ -832,7 +839,10 @@ function render(){
   $("#todoList").setAttribute("aria-labelledby", `tab-${todoTab}`);
   const est = cur.items.reduce((s,t) => s + (Number(t.estCost)||0), 0);
   $("#todoSum").textContent = `${cur.items.length} ${cur.items.length === 1 ? "item" : "items"}${est ? " · " + fmtMoney(est) + " estimated" : ""}`;
-  $("#todoList").innerHTML = cur.items.length ? cur.items.map(card).join("") : `<li class="empty">Nothing here.</li>`;
+  $("#todoList").innerHTML = cur.items.length ? ["High", "Medium", "Low"].map(pr => {
+    const its = cur.items.filter(t => (t.priority || "Medium") === pr);
+    return its.length ? `<div class="prio-group"><div class="prio-label ${pr}">${pr} <span class="n">${its.length}</span></div><ul class="cards work-grid">${its.map(card).join("")}</ul></div>` : "";
+  }).join("") : `<p class="empty">Nothing here.</p>`;
 
   renderLog();
   renderTires();
