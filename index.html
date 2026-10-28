@@ -272,6 +272,10 @@ dialog.sheet.closing::backdrop{animation:fade-out .2s ease forwards}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
 .sheet-head h3{margin:0}
 
+/* Tires and specs side by side */
+.tires-row{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:0 48px;align-items:start}
+@media (max-width:960px){.tires-row{grid-template-columns:1fr}}
+
 /* Contacts */
 .contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .contact{background:var(--card);border-radius:var(--radius-lg);padding:16px}
@@ -352,6 +356,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="timeline-wrap"><ol class="timeline" id="dueTags" tabindex="0" aria-label="Service timeline, scroll sideways for later milestones"></ol></div>
   </section>
 
+  <div class="tires-row">
   <section>
     <div class="sec-head"><h2>Tires</h2></div>
     <div class="tires">
@@ -381,6 +386,11 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     </div>
     <p class="tire-warn" id="tireWarn" hidden></p>
   </section>
+  <section>
+    <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
+    <dl class="specs" id="specList"></dl>
+  </section>
+  </div>
 
   <div class="grid">
     <div>
@@ -398,10 +408,6 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
         <div class="tabs" id="todoTabs" role="tablist" aria-label="Type of work"></div>
         <div class="tab-sum" id="todoSum"></div>
         <ul class="cards" id="todoList" role="tabpanel"></ul>
-      </section>
-      <section>
-        <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
-        <dl class="specs" id="specList"></dl>
       </section>
     </div>
   </div>
