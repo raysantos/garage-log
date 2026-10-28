@@ -258,8 +258,8 @@
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": null,
-          "notes": "Spark plugs worn or fouled. Also on the factory schedule; log it as Spark plugs when done to reset the countdown. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208).",
+          "estCost": 450,
+          "notes": "Spark plugs worn or fouled. Also on the factory schedule; log it as Spark plugs when done to reset the countdown. From TJA Auto Group inspection, 10/6/2026, RO 11622, 89,308 mi (161 Ridge Rd, Lyndhurst, 201-935-2208). Estimate: about $400-500 at TJA (about 1-1.5 hr at their ~$177/hr rate plus plugs and tax), or about $130-240 DIY. Genuine Porsche plugs 955 170 219 90, set of 6. Coils sit on top of the plugs; check them for cracked insulators while they're out.",
           "category": "Mechanical"
         },
         {
