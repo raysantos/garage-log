@@ -275,7 +275,8 @@ dialog.sheet.closing::backdrop{animation:fade-out .2s ease forwards}
 .sheet-head h3{margin:0}
 
 /* Tires and specs side by side */
-dl.specs{max-width:760px}
+/* Spec tables span the full section width; the tab bar already draws the top rule */
+#specList{border-top:0;margin-top:-12px}
 
 /* Contacts */
 .contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
