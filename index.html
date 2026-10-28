@@ -71,6 +71,7 @@ select.vehicle-pick{background:var(--paper);border:1px solid var(--line);border-
 .edit-only{display:none}
 body.editing .edit-only{display:inline-flex}
 body.editing .edit-only.block{display:block}
+body.editing .edit-only[hidden]{display:none}
 
 /* Hero: model name + odometer */
 .hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:48px}
@@ -274,8 +275,7 @@ dialog.sheet.closing::backdrop{animation:fade-out .2s ease forwards}
 .sheet-head h3{margin:0}
 
 /* Tires and specs side by side */
-.tires-row{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:0 48px;align-items:start}
-@media (max-width:960px){.tires-row{grid-template-columns:1fr}}
+dl.specs{max-width:760px}
 
 /* Contacts */
 .contacts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -321,6 +321,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="top-actions">
       <select class="vehicle-pick" id="vehiclePick" aria-label="Vehicle"></select>
       <button class="btn edit-only" id="addVehicleBtn">Add vehicle</button>
+      <button class="icon-btn" type="button" id="pricesBtn" aria-pressed="false" aria-label="Hide prices" title="Hide prices"><span class="ms" aria-hidden="true">visibility</span></button>
       <button class="icon-btn" type="button" id="contactsBtn" aria-label="Contacts" title="Contacts" aria-haspopup="dialog"><span class="ms" aria-hidden="true">contacts</span></button>
       <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode"><span class="ms" aria-hidden="true">dark_mode</span></button>
       <button class="btn" id="editToggle">Edit</button>
@@ -357,9 +358,10 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
     <div class="timeline-wrap"><ol class="timeline" id="dueTags" tabindex="0" aria-label="Service timeline, scroll sideways for later milestones"></ol></div>
   </section>
 
-  <div class="tires-row">
   <section>
-    <div class="sec-head"><h2>Tires</h2></div>
+    <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
+    <div class="tabs" id="specTabs" role="tablist" aria-label="Spec type"></div>
+    <div id="tirePanel" role="tabpanel">
     <div class="tires">
       <div class="tire-col left">
         <button type="button" class="tire-card" data-tire="FL"></button>
@@ -386,12 +388,9 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
       </div>
     </div>
     <p class="tire-warn" id="tireWarn" hidden></p>
+    </div>
+    <dl class="specs" id="specList" role="tabpanel" hidden></dl>
   </section>
-  <section>
-    <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
-    <dl class="specs" id="specList"></dl>
-  </section>
-  </div>
 
   <div class="grid">
     <div>
@@ -514,6 +513,7 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
   <h3 id="specDlgTitle">Add spec</h3>
   <div class="field"><label for="sLabel">Label</label><input id="sLabel" required placeholder="Tire size"></div>
   <div class="field"><label for="sValue">Value</label><input id="sValue" required></div>
+  <div class="field"><label for="sGroup">Tab</label><select id="sGroup"><option>Engine</option><option>Brakes</option><option>Body</option><option>Electrical</option></select></div>
   <div class="dlg-actions"><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="ok">Save spec</button></div>
 </form></dialog>
 
@@ -553,11 +553,15 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const uid = () => Math.random().toString(36).slice(2,9);
 const fmtMiles = n => (n == null || n === "") ? "—" : Number(n).toLocaleString() + " mi";
 const TODO_CATS = ["Mechanical", "Electrical", "Bodywork"];
+const SPEC_GROUPS = ["Engine", "Brakes", "Body", "Electrical"];
+let specTab = (() => { try { return localStorage.getItem("specTab") || "Tires"; } catch { return "Tires"; } })();
 // Timeline stacks: 3 items per column on wider screens, one long column per milestone on phones
 const TL_PHONE = matchMedia("(max-width:640px)");
 const TL_ROWS = () => TL_PHONE.matches ? Infinity : 3;
 let todoTab = (() => { try { return localStorage.getItem("todoTab") || "Mechanical"; } catch { return "Mechanical"; } })();
-const fmtMoney = n => { if (n == null || n === "") return ""; const x = Number(n), f = Number.isInteger(x) ? 0 : 2; return "$" + x.toLocaleString(undefined,{minimumFractionDigits:f,maximumFractionDigits:f}); };
+let hidePrices = (() => { try { return localStorage.getItem("hidePrices") === "1"; } catch { return false; } })();
+const fmtMoney = n => hidePrices && n != null && n !== "" ? "$•••" : fmtMoneyRaw(n);
+const fmtMoneyRaw = n => { if (n == null || n === "") return ""; const x = Number(n), f = Number.isInteger(x) ? 0 : 2; return "$" + x.toLocaleString(undefined,{minimumFractionDigits:f,maximumFractionDigits:f}); };
 const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}) : "";
 const today = () => new Date().toISOString().slice(0,10);
 const numOrNull = v => v === "" || v == null ? null : Number(v);
@@ -809,10 +813,18 @@ function render(){
   renderContacts();
 
   // Specs
-  $("#specList").innerHTML = v.specs.length ? v.specs.map(s => `
+  // Tabs: Tires first, then each spec group that has entries
+  const sg = [...SPEC_GROUPS, "Other"].map(c => ({ c, items: v.specs.filter(x => (SPEC_GROUPS.includes(x.group) ? x.group : "Other") === c) })).filter(x => x.items.length);
+  const stabs = [{ c:"Tires", n:null }, ...sg.map(x => ({ c:x.c, n:x.items.length }))];
+  if (!stabs.some(t => t.c === specTab)) specTab = "Tires";
+  $("#specTabs").innerHTML = stabs.map(t => `<button type="button" role="tab" class="tab" id="stab-${t.c}" aria-selected="${t.c === specTab}" tabindex="${t.c === specTab ? 0 : -1}" data-tab="${esc(t.c)}">${esc(t.c)}${t.n ? `<span class="count">${t.n}</span>` : ""}</button>`).join("");
+  $("#tirePanel").hidden = specTab !== "Tires"; $("#specList").hidden = specTab === "Tires";
+  const shown = sg.find(x => x.c === specTab)?.items || [];
+  $("#specList").innerHTML = shown.length ? shown.map(s => `
     <div><dt>${esc(s.label)}</dt><dd>${esc(s.value)}
       <span class="edit-only" style="gap:4px;margin-left:6px"><button class="btn link" data-act="edit-spec" data-id="${esc(s.id)}">Edit</button><button class="btn link" data-act="del-spec" data-id="${esc(s.id)}">Remove</button></span>
     </dd></div>`).join("") : `<div class="empty">No specs saved.</div>`;
+  $("#addSpecBtn").hidden = specTab === "Tires";
 }
 
 function renderLog(){
@@ -840,7 +852,7 @@ function renderLog(){
 
 function renderSpend(){
   const v = V(); if (!v) return;
-  const m = n => "$" + Math.round(n).toLocaleString();
+  const m = n => hidePrices ? "$•••" : "$" + Math.round(n).toLocaleString();
   const paid = v.log.filter(e => Number(e.cost) > 0);
   const total = paid.reduce((s,e) => s + Number(e.cost), 0);
   const yr = String(new Date().getFullYear());
@@ -905,6 +917,30 @@ $("#todoTabs").addEventListener("keydown", e => {
   const tabs = [...$("#todoTabs").querySelectorAll(".tab")], i = tabs.findIndex(t => t.dataset.tab === todoTab);
   const j = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1;
   if (j >= 0) { e.preventDefault(); setTodoTab(tabs[j].dataset.tab, true); }
+});
+
+/* ===== Show / hide prices ===== */
+function syncPricesBtn(){
+  const b = $("#pricesBtn"), label = hidePrices ? "Show prices" : "Hide prices";
+  b.setAttribute("aria-pressed", String(hidePrices)); b.setAttribute("aria-label", label); b.title = label;
+  b.querySelector(".ms").textContent = hidePrices ? "visibility_off" : "visibility";
+}
+$("#pricesBtn").addEventListener("click", () => {
+  hidePrices = !hidePrices; try { localStorage.setItem("hidePrices", hidePrices ? "1" : "0"); } catch {}
+  syncPricesBtn(); if (data) render();
+});
+syncPricesBtn();
+
+/* ===== Spec tabs ===== */
+function setSpecTab(c, focus){
+  specTab = c; try { localStorage.setItem("specTab", c); } catch {}
+  render(); if (focus) $(`#specTabs [data-tab="${c}"]`)?.focus();
+}
+$("#specTabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) setSpecTab(b.dataset.tab); });
+$("#specTabs").addEventListener("keydown", e => {
+  const tabs = [...$("#specTabs").querySelectorAll(".tab")], i = tabs.findIndex(t => t.dataset.tab === specTab);
+  const j = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1;
+  if (j >= 0) { e.preventDefault(); setSpecTab(tabs[j].dataset.tab, true); }
 });
 
 /* ===== Contacts ===== */
@@ -1068,9 +1104,10 @@ function specDialog(spec){
   const v = V();
   $("#specDlgTitle").textContent = spec ? "Edit spec" : "Add spec";
   $("#sLabel").value = spec?.label || ""; $("#sValue").value = spec?.value || "";
+  $("#sGroup").value = spec?.group || (SPEC_GROUPS.includes(specTab) ? specTab : "Engine");
   openDlg($("#specDlg"), async () => {
     const rec = spec || { id: uid() };
-    rec.label = $("#sLabel").value.trim(); rec.value = $("#sValue").value.trim();
+    rec.label = $("#sLabel").value.trim(); rec.value = $("#sValue").value.trim(); rec.group = $("#sGroup").value;
     if (!spec) v.specs.push(rec);
     render(); await save(`${spec ? "Edit" : "Add"} spec: ${rec.label}`);
   });

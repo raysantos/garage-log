@@ -16,47 +16,56 @@
         {
           "id": "s1",
           "label": "Engine oil",
-          "value": "5W-30, 0W-40 or 5W-40 with Porsche A40 approval. Confirm in manual."
+          "value": "5W-30, 0W-40 or 5W-40 with Porsche A40 approval. Confirm in manual.",
+          "group": "Engine"
         },
         {
           "id": "s2",
           "label": "Oil capacity",
-          "value": "6.3 L (6.7 qt) with filter. Start with 6 qt, then use the dipstick."
+          "value": "6.3 L (6.7 qt) with filter. Start with 6 qt, then use the dipstick.",
+          "group": "Engine"
         },
         {
           "id": "s3",
           "label": "Oil filter",
-          "value": "Cartridge, Mahle OX160D or equivalent, new O-ring"
+          "value": "Cartridge, Mahle OX160D or equivalent, new O-ring",
+          "group": "Engine"
         },
         {
           "id": "s4",
           "label": "Filter cap",
-          "value": "36 mm socket, 19 ft-lb"
+          "value": "36 mm socket, 19 ft-lb",
+          "group": "Engine"
         },
         {
           "id": "s5",
           "label": "Drain plug",
-          "value": "19 mm, 22 ft-lb, new plug and crush washer"
+          "value": "19 mm, 22 ft-lb, new plug and crush washer",
+          "group": "Engine"
         },
         {
           "id": "s6",
           "label": "Belly pan",
-          "value": "T25/T27 Torx and 10 mm"
+          "value": "T25/T27 Torx and 10 mm",
+          "group": "Engine"
         },
         {
           "id": "s7",
           "label": "Paint",
-          "value": "Black 041 (solid) or Basalt Black Metallic C9Z. Check the vehicle data sticker to confirm."
+          "value": "Black 041 (solid) or Basalt Black Metallic C9Z. Check the vehicle data sticker to confirm.",
+          "group": "Body"
         },
         {
           "id": "s8",
           "label": "Brake calipers",
-          "value": "Red Brembo, not standard on the base V6 (red came on the 955 Turbo). Match pads and rotors to the calipers, not the VIN."
+          "value": "Red Brembo, not standard on the base V6 (red came on the 955 Turbo). Match pads and rotors to the calipers, not the VIN.",
+          "group": "Brakes"
         },
         {
           "id": "s9",
           "label": "Head unit",
-          "value": "Aftermarket Android unit, not factory PCM. Rockchip-based (model auto_rk_t10), 9-inch screen, 4 GB RAM, 64 GB storage. Aftermarket backup camera wired to it."
+          "value": "Aftermarket Android unit, not factory PCM. Rockchip-based (model auto_rk_t10), 9-inch screen, 4 GB RAM, 64 GB storage. Aftermarket backup camera wired to it.",
+          "group": "Electrical"
         }
       ],
       "intervals": [
