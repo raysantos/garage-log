@@ -172,6 +172,7 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .car-top .axle{stroke:var(--line);stroke-width:2}
 .tire-warn{margin:16px 0 0;font-size:.9375rem;color:var(--due);display:flex;gap:8px;align-items:flex-start}
 .tire-warn::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--due);flex:none;margin-top:8px}
+.tire-warn[hidden]{display:none}
 @media (max-width:760px){
   .tires{grid-template-columns:1fr 1fr;gap:12px}
   .tires .car-wrap{grid-column:1/-1;grid-row:1;max-width:150px;margin:0 auto}
