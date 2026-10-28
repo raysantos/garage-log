@@ -405,19 +405,19 @@
     },
     {
       "id": "c-amaral",
-      "name": "Amaral Auto",
+      "name": "Amaral Auto Sales & Service",
       "role": "Detailing",
-      "address": null,
+      "address": "295 Park Ave, Lyndhurst, NJ 07071",
       "phone": "(201) 340-4925",
       "email": null,
-      "website": null,
-      "notes": "Ask for Mike, head of service detail. Recommended by TJA."
+      "website": "https://www.amaralautosales.com",
+      "notes": "Service and detailing line above (main line 973-382-7449). Ask for Mike, head of service detail. Recommended by TJA."
     },
     {
       "id": "c-ultimate",
       "name": "Ultimate Auto Body",
       "role": "Body shop",
-      "address": "Nutley, NJ",
+      "address": "151 River Rd, Nutley, NJ 07110",
       "phone": "(973) 667-6670",
       "email": null,
       "website": null,
