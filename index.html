@@ -194,6 +194,16 @@ body.editing .tire-card:hover{border-color:var(--ink)}
 .list .actions{grid-column:1/-1;gap:6px;margin-top:6px}
 /* Work cards */
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{position:relative;display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:.9375rem;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"]::after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:2px;background:var(--ink);border-radius:2px}
+.tab .count{font-weight:400;font-size:.75rem;padding:1px 7px;border-radius:999px;background:var(--card);color:var(--muted)}
+.tab:first-child{padding-left:0}
+.tab:first-child[aria-selected="true"]::after{left:0}
+.tab-sum{font-size:.8125rem;color:var(--muted);margin:0 0 12px}
 .cards .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .cards .cat-head:first-child{margin-top:0}
 .cards .cat-head h3{margin:0;font-family:var(--font-head);font-weight:600;font-size:1rem}
@@ -386,7 +396,9 @@ body.editing .banner{display:flex;justify-content:space-between;gap:12px;align-i
       <section>
         <div class="sec-head"><h2>Work needed</h2><button class="btn small primary edit-only" id="addTodoBtn">Add item</button></div>
         <div class="prio-key" aria-hidden="true"><span class="High">High</span><span class="Medium">Medium</span><span class="Low">Low</span></div>
-        <ul class="cards" id="todoList"></ul>
+        <div class="tabs" id="todoTabs" role="tablist" aria-label="Type of work"></div>
+        <div class="tab-sum" id="todoSum"></div>
+        <ul class="cards" id="todoList" role="tabpanel"></ul>
       </section>
       <section>
         <div class="sec-head"><h2>Specs</h2><button class="btn small edit-only" id="addSpecBtn">Add spec</button></div>
@@ -535,6 +547,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const uid = () => Math.random().toString(36).slice(2,9);
 const fmtMiles = n => (n == null || n === "") ? "—" : Number(n).toLocaleString() + " mi";
 const TODO_CATS = ["Mechanical", "Electrical", "Bodywork"];
+let todoTab = (() => { try { return localStorage.getItem("todoTab") || "Mechanical"; } catch { return "Mechanical"; } })();
 const fmtMoney = n => { if (n == null || n === "") return ""; const x = Number(n), f = Number.isInteger(x) ? 0 : 2; return "$" + x.toLocaleString(undefined,{minimumFractionDigits:f,maximumFractionDigits:f}); };
 const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}) : "";
 const today = () => new Date().toISOString().slice(0,10);
@@ -771,12 +784,16 @@ function render(){
         </div>
       </div>
     </details></li>`;
-  // Grouped by kind of work, each with its count and estimated total
-  const groups = [...TODO_CATS, "Other"].map(c => ({ c, items: todos.filter(t => (TODO_CATS.includes(t.category) ? t.category : "Other") === c) })).filter(g => g.items.length);
-  $("#todoList").innerHTML = todos.length ? groups.map(g => {
-    const est = g.items.reduce((s,t) => s + (Number(t.estCost)||0), 0);
-    return `<li class="cat-head"><h3>${esc(g.c)}</h3><span>${g.items.length} ${g.items.length === 1 ? "item" : "items"}${est ? " · " + esc(fmtMoney(est)) + " est." : ""}</span></li>` + g.items.map(card).join("");
-  }).join("") : `<li class="empty">Nothing on the list.</li>`;
+  // Tabs by kind of work; the active tab shows its count and estimated total
+  const groups = [...TODO_CATS, "Other"].map(c => ({ c, items: todos.filter(t => (TODO_CATS.includes(t.category) ? t.category : "Other") === c) }))
+    .filter(g => g.items.length || g.c !== "Other");
+  if (!groups.some(g => g.c === todoTab)) todoTab = groups[0].c;
+  const cur = groups.find(g => g.c === todoTab);
+  $("#todoTabs").innerHTML = groups.map(g => `<button type="button" role="tab" class="tab" id="tab-${g.c}" aria-selected="${g.c === todoTab}" aria-controls="todoList" tabindex="${g.c === todoTab ? 0 : -1}" data-tab="${esc(g.c)}">${esc(g.c)}<span class="count">${g.items.length}</span></button>`).join("");
+  $("#todoList").setAttribute("aria-labelledby", `tab-${todoTab}`);
+  const est = cur.items.reduce((s,t) => s + (Number(t.estCost)||0), 0);
+  $("#todoSum").textContent = `${cur.items.length} ${cur.items.length === 1 ? "item" : "items"}${est ? " · " + fmtMoney(est) + " estimated" : ""}`;
+  $("#todoList").innerHTML = cur.items.length ? cur.items.map(card).join("") : `<li class="empty">Nothing here.</li>`;
 
   renderLog();
   renderTires();
@@ -869,6 +886,18 @@ function renderOdometer(miles){
   paint(from);
   odoAnim = requestAnimationFrame(step);
 }
+
+/* ===== Work tabs ===== */
+function setTodoTab(c, focus){
+  todoTab = c; try { localStorage.setItem("todoTab", c); } catch {}
+  render(); if (focus) $(`#todoTabs [data-tab="${c}"]`)?.focus();
+}
+$("#todoTabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) setTodoTab(b.dataset.tab); });
+$("#todoTabs").addEventListener("keydown", e => {
+  const tabs = [...$("#todoTabs").querySelectorAll(".tab")], i = tabs.findIndex(t => t.dataset.tab === todoTab);
+  const j = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1;
+  if (j >= 0) { e.preventDefault(); setTodoTab(tabs[j].dataset.tab, true); }
+});
 
 /* ===== Contacts ===== */
 (() => {
