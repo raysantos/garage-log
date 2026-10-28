@@ -614,7 +614,8 @@ const SPEC_GROUPS = ["Engine", "Brakes", "Body", "Electrical"];
 let specTab = (() => { try { return localStorage.getItem("specTab") || "Tires"; } catch { return "Tires"; } })();
 // Timeline stacks: 3 items per column on wider screens, one long column per milestone on phones
 const TL_PHONE = matchMedia("(max-width:640px)");
-const TL_ROWS = () => TL_PHONE.matches ? Infinity : 3;
+// At most two columns per milestone: split the items evenly, at least 3 per column
+const TL_ROWS = n => TL_PHONE.matches ? Infinity : Math.max(3, Math.ceil(n / 2));
 let todoTab = (() => { try { return localStorage.getItem("todoTab") || "Mechanical"; } catch { return "Mechanical"; } })();
 let hidePrices = (() => { try { return localStorage.getItem("hidePrices") === "1"; } catch { return false; } })();
 const fmtMoney = n => hidePrices && n != null && n !== "" ? "$•••" : fmtMoneyRaw(n);
@@ -798,20 +799,20 @@ function render(){
   Object.values(doneGroups).sort((a,b) => a.date.localeCompare(b.date) || (a.miles||0)-(b.miles||0)).forEach(g => {
     const total = g.items.reduce((s,e) => s + (Number(e.cost)||0), 0);
     const label = `<div class="tl-when"><div class="tl-mark">${g.miles != null ? esc(fmtMiles(g.miles)) : esc(fmtDate(g.date))}</div><div class="tl-away">Done ${esc(fmtDate(g.date))}${total ? " · " + esc(fmtMoney(Math.round(total*100)/100)) : ""}</div></div>`;
-    for (let i = 0; i < g.items.length; i += TL_ROWS()) {
+    for (let i = 0; i < g.items.length; i += TL_ROWS(g.items.length)) {
       nodes.push(`<li class="tl-node done ${i ? "cont" : "done-start"}"><span class="tl-dot" aria-hidden="true">${check}</span>
         ${label}
-        <div class="tl-items">${g.items.slice(i, i + TL_ROWS()).map(doneItem).join("")}</div></li>`);
+        <div class="tl-items">${g.items.slice(i, i + TL_ROWS(g.items.length)).map(doneItem).join("")}</div></li>`);
     }
   });
   if (nowRows.length) {
     const anyOver = nowRows.some(r => r.s.cls === "over");
     // Split into regular-width columns of up to 3 items so Due now lines up with the other milestones
     const label = `<div class="tl-when"><div class="tl-mark">Due now</div><div class="tl-away">${nowRows.length} ${nowRows.length === 1 ? "item" : "items"}</div></div>`;
-    for (let i = 0; i < nowRows.length; i += TL_ROWS()) {
+    for (let i = 0; i < nowRows.length; i += TL_ROWS(nowRows.length)) {
       nodes.push(`<li class="tl-node now ${anyOver ? "over" : ""} ${i ? "cont" : ""}"${i ? '' : ""}><span class="tl-dot" aria-hidden="true"></span>
         ${label}
-        <div class="tl-items">${nowRows.slice(i, i + TL_ROWS()).map(item).join("")}</div></li>`);
+        <div class="tl-items">${nowRows.slice(i, i + TL_ROWS(nowRows.length)).map(item).join("")}</div></li>`);
     }
   }
   Object.keys(byMiles).map(Number).sort((a,b) => a-b).forEach((m, i) => {
