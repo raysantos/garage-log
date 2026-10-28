@@ -402,6 +402,26 @@
       "email": null,
       "website": "https://zipposmobile.com",
       "notes": "Recommended by TJA for the head unit, backup camera and interior light issues. Second location: 918 Route 22 East, North Plainfield, (908) 756-3922."
+    },
+    {
+      "id": "c-amaral",
+      "name": "Amaral Auto",
+      "role": "Detailing",
+      "address": null,
+      "phone": "(201) 340-4925",
+      "email": null,
+      "website": null,
+      "notes": "Ask for Mike, head of service detail. Recommended by TJA."
+    },
+    {
+      "id": "c-ultimate",
+      "name": "Ultimate Auto Body",
+      "role": "Body shop",
+      "address": "Nutley, NJ",
+      "phone": "(973) 667-6670",
+      "email": null,
+      "website": null,
+      "notes": "Ask for Tony, the owner. Recommended by TJA. Candidate for the roof and bumper respray."
     }
   ]
 }
