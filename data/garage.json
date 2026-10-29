@@ -244,12 +244,12 @@
         },
         {
           "id": "tpaint26",
-          "title": "Paint and detail: roof, bumper, hood, rear door, trim",
+          "title": "Body work on roof and bumper, then detail for scratches and paint haze",
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": 4200,
-          "notes": "Clear coat failing on the roof and bumper and hazy on the hood; rear driver door gloss doesn't match; trim paint chipping. Estimate about $2,750-5,650 at an independent NJ body shop and detailer, budgeting ~$4,200 (black metallic, large SUV panels; dealer shops run higher):\n- Roof respray: $800-1,600\n- Front bumper respray: $450-900\n- Hood respray: $450-900 (less if it polishes out)\n- Rear driver door clear and blend: $400-800\n- Trim refinish or touch-up: $150-400\n- Detailing, two-step paint correction on the whole car: $400-800\n- Paint sealant: $100-250 (ceramic coating instead: $500-1,200)\nOrder: paint first, then correct and blend, then wait about 30 days for new paint to cure before sealing. Paint quotes: Quality Automall (Rutherford), Jersey Auto Body (Passaic), Dynamic Collision (East Rutherford). Detailing: JD Auto Detailing (Clifton) or Get Right Mobile Detailing. Ask each body shop to quote all panels in one visit, whether they blend into adjacent panels, and whether the hood and door can be polished instead of painted.",
+          "estCost": 800,
+          "notes": "Quotes 10/29/2026: body work $400 (Ultimate Auto Body, Nutley, Tony) and a detail job to clean up scratches and paint haze $400 (Amaral Auto, Lyndhurst, Mike). $800 total. Confirm the $400 body quote covers both the roof and front bumper, including blending into the panels next to them. Do the body work first, then the detail; ask the detailer to go light on the fresh paint and wait about 30 days before any sealant or wax on the repainted panels.",
           "category": "Bodywork"
         },
         {
