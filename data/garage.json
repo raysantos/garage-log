@@ -199,6 +199,17 @@
           "by": "TJA Auto Care (Lyndhurst)",
           "parts": "",
           "notes": "Pre-purchase inspection, 1.0 hr labor $177.00 + tax $11.73; multi-point inspection no charge; environmental charge and shop supplies $5.68 + tax $0.36. RO 11622. Findings are in Work needed."
+        },
+        {
+          "id": "l-cel-1106",
+          "date": "2026-11-06",
+          "miles": null,
+          "title": "Check engine light: loose or broken plastic hose replaced",
+          "intervalId": null,
+          "cost": null,
+          "by": "",
+          "parts": "",
+          "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. Add shop, cost, mileage and the trouble code if known."
         }
       ],
       "todo": [
