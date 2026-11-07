@@ -206,10 +206,10 @@
           "miles": null,
           "title": "Check engine light: loose or broken plastic hose replaced",
           "intervalId": null,
-          "cost": null,
+          "cost": 0,
           "by": "",
           "parts": "",
-          "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. Add shop, cost, mileage and the trouble code if known."
+          "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. No charge. Add shop, mileage and the trouble code if known."
         }
       ],
       "todo": [
