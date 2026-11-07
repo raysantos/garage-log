@@ -393,6 +393,16 @@
           "dueDate": null,
           "estCost": null,
           "notes": "Rust on the driver seat mounting bolts means water is reaching the floor. Check: pull back the carpet and feel the padding underneath (it can be soaked while the top looks dry); test the sunroof drains by pouring water into the front corners of the sunroof tray and making sure it drains out under the car; clear the cowl drains under the windshield wipers; check the driver door's inner membrane and the windshield seal. Dry the floor fully, then treat the bolts. Persistent window fogging can be a sign of a wet floor."
+        },
+        {
+          "id": "tsunroof",
+          "title": "Sunroof whines when closing",
+          "category": "Body",
+          "priority": "Low",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "High-pitched whine when closing usually means the motor is straining against dirty, dry guide tracks. Do it with the sunroof drain check: vacuum the tray, wipe the old grease and grit off the tracks, and relube with a light grease made for sunroofs (e.g. Super Lube). Avoid WD-40. If it still whines, or moves jerky or crooked, the cables or motor gears may be worn; have a shop look."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
