@@ -764,7 +764,7 @@ function render(){
   v.log ||= []; v.todo ||= []; v.specs ||= []; v.intervals ||= [];
 
   $("#vTitle").textContent = `${v.year} ${v.make} ${v.model}`;
-  $("#vSub").textContent = [v.trim, v.engine].filter(Boolean).join(", ");
+  $("#vSub").textContent = [v.modelCode ? `Type ${v.modelCode}` : "", v.trim, v.engine].filter(Boolean).join(", ");
   const img = $("#vImg");
   if (v.image) { img.src = v.image; img.alt = `${v.year} ${v.make} ${v.model}`; img.hidden = false; img.onerror = () => img.hidden = true; }
   else { img.hidden = true; img.removeAttribute("src"); }
