@@ -255,12 +255,12 @@
         },
         {
           "id": "tpaint26",
-          "title": "Paint and detail: roof, bumper, hood, rear door, trim",
+          "title": "Machine polish the whole car (paint correction)",
           "priority": "Medium",
           "dueMiles": null,
           "dueDate": null,
-          "estCost": 800,
-          "notes": "Quotes 10/29/2026: body work $400 (Ultimate Auto Body, Nutley, Tony) and a detail job $400 to clean up scratches and paint haze (Amaral Auto, Lyndhurst, Mike). $800 total, versus the ~$4,200 budgeted for full resprays. Goal is much better, not perfect; deep scratches may remain and that's acceptable.\nOriginal findings: clear coat failing on the roof and bumper and hazy on the hood; rear driver door gloss doesn't match (shop says it was wet sanded but never compounded and polished, so it can be finished with polishing rather than paint); trim paint chipping.\nBefore booking: confirm exactly which panels the $400 body work covers (roof, front bumper, hood, rear door, trim) and whether it includes blending. Order: body work first, then the detail. Wait about 30 days before sealant or wax on any repainted panels.",
+          "estCost": 400,
+          "notes": "Decided 11/6/2026: no repaint and no wrap. Going with a $400 machine polish for a solid, polished look, not perfect. Quote from Amaral Auto (Lyndhurst), ask for Mike. Deep scratches may remain, and that's fine.\nShould also finish the rear driver door, which was wet sanded but never compounded and polished. Ask him to check that door with a paint thickness gauge first. Afterward, add a sealant to protect the finish.\nNot fixed by polishing: the roof and front bumper, where the clear coat is failing, will still look worn.",
           "category": "Bodywork"
         },
         {
@@ -361,7 +361,7 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Paint or coating on the exterior trim is chipping. Note which pieces when getting body shop quotes; options are touch-up, refinishing the trim, or replacing the pieces. Could be done alongside the respray. Priced in the paint and detail item so it isn't counted twice."
+          "notes": "Paint or coating on the exterior trim is chipping. Not covered by the machine polish. Options: touch-up paint, a trim restorer or black trim coating (DIY, about $20-60), or replacing the worst pieces."
         },
         {
           "id": "tdoor",
@@ -371,18 +371,7 @@
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "Rear driver door looks like it was repainted before: the color is close and the surface is smooth, like it has some clear coat, but the gloss doesn't match the rest of the car. Likely a different clear or one that was never cut and polished, so a machine polish may bring it close; if not, it needs a fresh clear blended into the panel. Ask the body shops and include it in the paint quotes. Priced in the paint and detail item so it isn't counted twice."
-        },
-        {
-          "id": "twrap",
-          "option": "tpaint26",
-          "title": "Overland two-tone wrap instead of full repaint",
-          "category": "Bodywork",
-          "priority": "Medium",
-          "dueMiles": null,
-          "dueDate": null,
-          "estCost": 3000,
-          "notes": "Alternative to the paint and detail item. Satin black on the surfaces that face up or take hits, gloss black body in between:\n- Satin black roof (under the roof rack) and hood: $550-1,100\n- Satin black lower body (lower bumper, rockers, bottom of the doors): $600-1,200\n- Blacked-out trim (covers the chipping trim item): $200-500\n- Satin black mirror caps: $50-150\n- Correct and polish the remaining gloss paint, including the rear driver door: $500-1,000\nAbout $1,900-3,950 total, budgeting ~$3,000. The failing clear on the roof, hood and bumper must be sanded flush before wrapping. Cast vinyl lasts about 4-7 years. Shown as an option, so it isn't added to the planned total."
+          "notes": "Rear driver door looks like it was repainted before: the color is close and the surface is smooth, like it has some clear coat, but the gloss doesn't match the rest of the car. Likely a different clear or one that was never cut and polished, so a machine polish may bring it close; if not, it needs a fresh clear blended into the panel. Ask the body shops and include it in the paint quotes. Priced in the paint and detail item so it isn't counted twice. Covered by the machine polish item."
         },
         {
           "id": "tdrivenoise",
