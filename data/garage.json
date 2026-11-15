@@ -250,11 +250,11 @@
         {
           "id": "t2",
           "title": "Replace both headlights",
-          "priority": "Medium",
+          "priority": "High",
           "dueMiles": null,
           "dueDate": null,
           "estCost": 783.9,
-          "notes": "Replacing both halogen headlight assemblies as a straight swap: Valeo 46658 (driver/left) and Valeo 46659 (passenger/right), $391.95 each, bulbs included, $783.90 total with free shipping. The passenger side had water inside the lens. DIY: open the hood, use the release tool in the access hole at the top of each headlight to push it forward, unplug, slide the new one in and tighten. Aim the lights afterward. Update 11/15/2026: lenses were polished at the detail, but condensation inside still makes them look hazy, so the leak is still there. Cheaper first try (about $20): remove the headlight, dry it out with the rear bulb covers off, check the rear caps, vent tubes and lens seal, and reseal with butyl if needed. If it fogs again, do the replacement. Ask a Porsche dealer whether the headlight recall (22V656000) applies to this VIN before buying.",
+          "notes": "Replacing both halogen headlight assemblies as a straight swap: Valeo 46658 (driver/left) and Valeo 46659 (passenger/right), $391.95 each, bulbs included, $783.90 total with free shipping. The passenger side had water inside the lens. DIY: open the hood, use the release tool in the access hole at the top of each headlight to push it forward, unplug, slide the new one in and tighten. Aim the lights afterward. Update 11/15/2026: lenses were polished at the detail, but condensation inside still makes them look hazy, so the leak is still there. Cheaper first try (about $20): remove the headlight, dry it out with the rear bulb covers off, check the rear caps, vent tubes and lens seal, and reseal with butyl if needed. If it fogs again, do the replacement. Ask a Porsche dealer whether the headlight recall (22V656000) applies to this VIN before buying. Also 11/15: one headlight flickers, likely a loose bulb or a connector corroded by the water inside. Check the bulb seating and connector pins (clean with contact cleaner, add dielectric grease); new assemblies with bulbs fix both. Lenses got the ceramic spray 11/15 for UV protection.",
           "category": "Electrical"
         },
         {
