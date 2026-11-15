@@ -399,14 +399,14 @@
           "id": "tpaint2",
           "title": "Paint and clear: rear bumper, roof, rear driver door",
           "category": "Bodywork",
-          "priority": "Medium",
+          "priority": "High",
           "dueMiles": null,
           "dueDate": null,
           "estCost": null,
-          "notes": "After the 11/14/2026 machine polish: the rear bumper and roof still need paint and clear, since their clear coat is failing and polishing can't restore it. The rear driver door is smooth but looks whitish and lighter than the rest; that usually means the clear is too thin, was sanded through, or is clouding, so it needs a fresh clear (or base and clear) blended into the panel. Get a body shop quote for all three in one visit, e.g. Ultimate Auto Body (Nutley, Tony). Wait about 30 days after painting before sealing or waxing those panels."
+          "notes": "After the 11/14/2026 machine polish: the rear bumper and roof still need paint and clear, since their clear coat is failing and polishing can't restore it. The rear driver door is smooth but looks whitish and lighter than the rest; that usually means the clear is too thin, was sanded through, or is clouding, so it needs a fresh clear (or base and clear) blended into the panel. Get a body shop quote for all three in one visit, e.g. Ultimate Auto Body (Nutley, Tony). Wait about 30 days after painting before sealing or waxing those panels. Update 11/15/2026: body filler (Bondo) is showing through on the rear bumper. It's smooth, but bare filler soaks up water and will crack or bubble, so get it sealed and painted soon. A wrap or film won't hide or protect it reliably; ask that the shop use flexible filler and primer since the bumper cover is plastic. Optional: clear PPF over the new paint after 30 days."
         }
       ],
-      "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
+      "scheduleNote": "Porsche factory schedule for the 2003–2006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
       "tires": {
         "FL": {},
         "FR": {},
