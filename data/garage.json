@@ -213,6 +213,17 @@
           "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. No charge. Add shop, mileage and the trouble code if known."
         },
         {
+          "id": "l-detail-1115",
+          "date": "2026-11-15",
+          "miles": null,
+          "title": "Detail",
+          "intervalId": null,
+          "cost": null,
+          "by": "",
+          "parts": "",
+          "notes": "Hood looks great after the detail. Next: protect the hood with a ceramic coating (DIY, e.g. CarPro CQuartz UK 3.0, in a garage above 50°F). Add cost and shop if needed."
+        },
+        {
           "id": "l-polish-1114",
           "date": "2026-11-14",
           "miles": null,
