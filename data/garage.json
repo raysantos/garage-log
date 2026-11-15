@@ -211,6 +211,17 @@
           "by": "",
           "parts": "",
           "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. No charge. Add shop, mileage and the trouble code if known."
+        },
+        {
+          "id": "l-polish-1114",
+          "date": "2026-11-14",
+          "miles": null,
+          "title": "Machine polish, whole car",
+          "intervalId": null,
+          "cost": 400,
+          "by": "Amaral Auto (Lyndhurst)",
+          "parts": "",
+          "notes": "Paint correction for scratches and haze. Cost is the $400 quote; update if the final amount or shop was different. Afterward: rear bumper and roof still need paint and clear; rear driver door is smooth but whitish/lighter and needs more clear or paint."
         }
       ],
       "todo": [
@@ -253,16 +264,6 @@
           "estCost": null,
           "notes": "Mechanic who worked on the car heard an exhaust leak; louder than normal but no running problems noticed. Have the source pinpointed (manifold gasket, flex pipe or a joint/clamp). Listen for ticking on cold start and watch for exhaust smell in the cabin.",
           "category": "Mechanical"
-        },
-        {
-          "id": "tpaint26",
-          "title": "Machine polish and body touch-up, whole car",
-          "priority": "Medium",
-          "dueMiles": null,
-          "dueDate": null,
-          "estCost": 400,
-          "notes": "Decided 11/6/2026: no repaint and no wrap. One $400 job covers the very minor body work needed and a machine polish of the whole car, including the roof, front bumper, hood and rear driver door. Goal is a solid, polished look, not perfect; deep scratches may remain, and that's fine.\nRear driver door was wet sanded but never compounded and polished; ask them to check it with a paint thickness gauge first. Afterward, add a sealant (about $100) to protect the finish. Confirm the shop before booking.",
-          "category": "Bodywork"
         },
         {
           "id": "tja-wipers",
@@ -365,16 +366,6 @@
           "notes": "Paint or coating on the exterior trim is chipping. Not covered by the machine polish. Options: touch-up paint, a trim restorer or black trim coating (DIY, about $20-60), or replacing the worst pieces."
         },
         {
-          "id": "tdoor",
-          "title": "Rear driver door looks repainted, less glossy",
-          "category": "Bodywork",
-          "priority": "Low",
-          "dueMiles": null,
-          "dueDate": null,
-          "estCost": null,
-          "notes": "Rear driver door looks like it was repainted before: the color is close and the surface is smooth, like it has some clear coat, but the gloss doesn't match the rest of the car. Likely a different clear or one that was never cut and polished, so a machine polish may bring it close; if not, it needs a fresh clear blended into the panel. Ask the body shops and include it in the paint quotes. Priced in the paint and detail item so it isn't counted twice. Covered by the machine polish item."
-        },
-        {
           "id": "tdrivenoise",
           "title": "Rhythmic \"eh eh eh\" noise when lifting off the gas",
           "category": "Mechanical",
@@ -403,6 +394,16 @@
           "dueDate": null,
           "estCost": null,
           "notes": "High-pitched whine when closing usually means the motor is straining against dirty, dry guide tracks. Do it with the sunroof drain check: vacuum the tray, wipe the old grease and grit off the tracks, and relube with a light grease made for sunroofs (e.g. Super Lube). Avoid WD-40. If it still whines, or moves jerky or crooked, the cables or motor gears may be worn; have a shop look."
+        },
+        {
+          "id": "tpaint2",
+          "title": "Paint and clear: rear bumper, roof, rear driver door",
+          "category": "Bodywork",
+          "priority": "Medium",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": null,
+          "notes": "After the 11/14/2026 machine polish: the rear bumper and roof still need paint and clear, since their clear coat is failing and polishing can't restore it. The rear driver door is smooth but looks whitish and lighter than the rest; that usually means the clear is too thin, was sanded through, or is clouding, so it needs a fresh clear (or base and clear) blended into the panel. Get a body shop quote for all three in one visit, e.g. Ultimate Auto Body (Nutley, Tony). Wait about 30 days after painting before sealing or waxing those panels."
         }
       ],
       "scheduleNote": "Porsche factory schedule for the 2003\u20132006 Cayenne V6. Checked points are services already logged. Items with no record show as due once the car has passed their mileage or age; log a service to start each countdown.",
