@@ -213,6 +213,17 @@
           "notes": "Check engine light came on after a fill-up. Mechanic found a loose or broken plastic hose and replaced it; said brittle plastic hoses are normal on a 20-year-old car. No charge. Add shop, mileage and the trouble code if known."
         },
         {
+          "id": "l-ceramic-1115",
+          "date": "2026-11-15",
+          "miles": null,
+          "title": "Ceramic spray coating (DIY)",
+          "intervalId": null,
+          "cost": null,
+          "by": "DIY",
+          "parts": "Turtle Wax Hybrid Solutions Ceramic Spray Coating (AutoZone)",
+          "notes": "First coat applied with a pad and buffed off, right after the 11/15 detail. Optional second coat after 12–24 hours. Top up with a ceramic spray wax every 1–2 months; recoat about every 6 months. Roof, rear bumper and rear door skipped until repainted."
+        },
+        {
           "id": "l-detail-1115",
           "date": "2026-11-15",
           "miles": null,
