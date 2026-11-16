@@ -248,6 +248,16 @@
       ],
       "todo": [
         {
+          "id": "ttires",
+          "title": "Next tires: Yokohama Geolandar A/T G015, 255/65R17",
+          "category": "Mechanical",
+          "priority": "Low",
+          "dueMiles": null,
+          "dueDate": null,
+          "estCost": 932,
+          "notes": "Replace the current tires with these once they wear out. Size 255/65R17 (up from stock 235/65R17) fits the stock 7.5J x 17 ET53 rims on the coil-spring suspension with no lift or spacers: about 1 in taller and 0.8 in wider, a 3.4% diameter change, so the speedometer reads about 2 mph low at 55. Chosen for a quiet, smooth ride with better snow grip and tread life. About $233 per tire (110T or 114H XL); check for Yokohama rebates. Buy the passenger (P-metric) version, not LT; load index 108 or higher (stock is 108); reuse the current 315 MHz TPMS sensors. Backup choice for the quietest cabin: Continental TerrainContact A/T 255/65R17 (about $251). Skip 265/65R17, which may rub at full lock. Flagged 11/15/2026."
+        },
+        {
           "id": "t2",
           "title": "Replace both headlights",
           "priority": "High",
